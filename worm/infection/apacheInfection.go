@@ -1,6 +1,5 @@
 package infection
 
-// Hello returns a greeting for the named person.
-func ApacheInfect(name string) string {
+func ApacheInfect() string {
 	return "ApacheInfect"
 }
