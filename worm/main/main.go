@@ -7,6 +7,6 @@ import (
 
 func main() {
 	// Get a greeting message and print it.
-	message := infection.sshInfect()
+	message := infection.SshInfect()
 	fmt.Println(message)
 }
