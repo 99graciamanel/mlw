@@ -1,0 +1,15 @@
+# This file describes the network interfaces available on your system
+# For more information, see netplan(5).
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s3:
+      dhcp4: no
+      addresses:
+         - 10.0.2.15/24
+      nameservers:
+         addresses: [1.1.1.1]
+      routes:
+         - to: 0.0.0.0
+           via: 10.0.2.1
