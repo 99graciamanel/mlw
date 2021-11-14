@@ -5,12 +5,11 @@ import (
 	"log"
 )
 
-func GetSelf() []byte {
-	var worm []byte
-	worm, err := ioutil.ReadFile("/proc/self/exe")
+func GetFile(filename string) []byte {
+	var file []byte
+	file, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatal("Unable to read worm binary: %v", err)
+		log.Fatal("Unable to read binary: %v", err)
 	}
-	log.Printf("Length: %d",len(worm))
-	return worm
+	return file
 }
