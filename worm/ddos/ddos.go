@@ -1,10 +1,14 @@
 package ddos
 
-import "fmt"
+import (
+    "fmt"
+    "sync"
+)
 
 // Hello returns a greeting for the named person.
-func Hello(name string) string {
+func Hello(wg *sync.WaitGroup, name string) {
     // Return a greeting that embeds the name in a message.
     message := fmt.Sprintf("Hi, %v. Welcome!", name)
-    return message
+    fmt.Println(message)
+    wg.Done()
 }

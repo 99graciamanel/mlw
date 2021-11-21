@@ -41,8 +41,6 @@ func ApacheInfect(ip string, port string) string {
     if err != nil {
         log.Fatal(err)
     }
-    fmt.Println(string(resp))
-
     conn.Close()
-	return "ApacheInfect"
+	return string(resp)
 }
