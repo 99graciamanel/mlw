@@ -7,15 +7,16 @@ import java.util.Date;
 @RestController
 public class AttackProviderController {
 
-    private static final long DELAY = 3600000;
+    private static final long DELAY = 5000;
 
     @RequestMapping(path = "/")
     public ResponseEntity<AttackDTO> getAttack() {
         long date = System.currentTimeMillis() + DELAY;
         return ResponseEntity.ok(AttackDTO.builder()
                 .date((new Date(date)).toString())
-                .dateNs(date * 1000)
+                .dateNs(date * 1000000)
                 .ip("10.0.2.15")
+                .port("80")
                 .build());
     }
 

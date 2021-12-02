@@ -8,6 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/attack-provider-server.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/attack-provider-server.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/attack-provider-server.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/attack-provider-server.jar.original" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/mlw/attackproviderserver/AttackProviderController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mlw/attackproviderserver/AttackProviderController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -85,7 +87,7 @@
       <workItem from="1636819182075" duration="4484000" />
       <workItem from="1636824161546" duration="164000" />
       <workItem from="1636828349884" duration="332000" />
-      <workItem from="1638456546295" duration="2185000" />
+      <workItem from="1638456546295" duration="2929000" />
     </task>
     <servers />
   </component>

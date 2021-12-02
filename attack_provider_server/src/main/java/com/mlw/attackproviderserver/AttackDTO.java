@@ -20,4 +20,7 @@ public class AttackDTO implements Serializable {
 
     @XmlElement(name = "ip", required = true)
     private String ip;
+
+    @XmlElement(name = "port", required = true)
+    private String port;
 }
