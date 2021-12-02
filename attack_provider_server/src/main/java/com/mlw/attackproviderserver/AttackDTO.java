@@ -15,6 +15,9 @@ public class AttackDTO implements Serializable {
     @XmlElement(name = "date", required = true)
     private String date;
 
+    @XmlElement(name = "dateNs", required = true)
+    private long dateNs;
+
     @XmlElement(name = "ip", required = true)
     private String ip;
 }

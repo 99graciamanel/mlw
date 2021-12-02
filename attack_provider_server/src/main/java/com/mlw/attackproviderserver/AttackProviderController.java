@@ -11,8 +11,10 @@ public class AttackProviderController {
 
     @RequestMapping(path = "/")
     public ResponseEntity<AttackDTO> getAttack() {
+        long date = System.currentTimeMillis() + DELAY;
         return ResponseEntity.ok(AttackDTO.builder()
-                .date((new Date(System.currentTimeMillis() + DELAY)).toString())
+                .date((new Date(date)).toString())
+                .dateNs(date * 1000)
                 .ip("10.0.2.15")
                 .build());
     }
