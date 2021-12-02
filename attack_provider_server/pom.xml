@@ -8,14 +8,18 @@
         <version>2.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>spring-boot-initial</artifactId>
+    <groupId>com.mlw.attackproviderserver</groupId>
+    <artifactId>attack-provider-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-boot-initial</name>
-    <description>Demo project for Spring Boot</description>
+    <name>attack-provider-server</name>
+    <description>Attack Provider Server</description>
+
+    <packaging>jar</packaging>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -30,9 +34,16 @@
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
