@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="91e2c378-390b-4d16-aa04-145a536dd5be" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/attack-provider-server.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/attack-provider-server.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/attack-provider-server.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/attack-provider-server.jar.original" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mlw/attackproviderserver/AttackProviderController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mlw/attackproviderserver/AttackProviderController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,19 +50,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="spring-boot-initial" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.mlw.attackproviderserver.Application" />
@@ -87,7 +70,8 @@
       <workItem from="1636819182075" duration="4484000" />
       <workItem from="1636824161546" duration="164000" />
       <workItem from="1636828349884" duration="332000" />
-      <workItem from="1638456546295" duration="2929000" />
+      <workItem from="1638456546295" duration="3571000" />
+      <workItem from="1638547635850" duration="22000" />
     </task>
     <servers />
   </component>
