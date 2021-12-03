@@ -24,10 +24,12 @@ func ScanIp(ip string) [3]int {
 		}
 	}
 	//SSH Scan
-	conn, err := net.DialTimeout("tcp", ip+":22",1)
+	timeout,_ := time.ParseDuration("1s")
+	conn, err := net.DialTimeout("tcp", ip+":22",timeout)
 	if err == nil {
 		defer conn.Close()
 		message,err := bufio.NewReader(conn).ReadString('\n')
+		fmt.Println(message)
 		if err == nil {
 			if strings.Contains(message,"SSH") {
 				ret[1] = 22
