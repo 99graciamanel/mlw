@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/99graciamanel/mlw/worm/infection"
 	"github.com/99graciamanel/mlw/worm/scan"
-//	"github.com/99graciamanel/mlw/worm/ddos"
+	"github.com/99graciamanel/mlw/worm/ddos"
 	"strconv"
 	"os"
 )
