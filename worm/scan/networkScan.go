@@ -24,7 +24,8 @@ func ScanIp(ip string) [3]int {
 		}
 	}
 	//SSH Scan
-	conn, err := net.DialTimeout("tcp", ip+":22",1)
+	timeout,_ := time.ParseDuration("1s")
+	conn, err := net.DialTimeout("tcp", ip+":22",timeout)
 	if err == nil {
 		defer conn.Close()
 		message,err := bufio.NewReader(conn).ReadString('\n')
@@ -32,6 +33,14 @@ func ScanIp(ip string) [3]int {
 			if strings.Contains(message,"SSH") {
 				ret[1] = 22
 			}
+		}
+	}
+	//Confluence Scan
+	resp, err = client.Get(fmt.Sprintf("http://%s:8090/",ip))
+	if err == nil {
+		header := resp.Header.Get("X-Confluence-Request-Time")
+		if header != "" {
+			ret[2] = 8090
 		}
 	}
 	return ret

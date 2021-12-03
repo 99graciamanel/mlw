@@ -1,4 +1,4 @@
-package main
+package ddos
 
 import (
 	"fmt"
