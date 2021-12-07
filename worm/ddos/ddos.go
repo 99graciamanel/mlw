@@ -3,11 +3,11 @@ package ddos
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	//"log"
 	"math/rand"
 	"net/http"
 	"os/exec"
-	"strings"
+	//"strings"
 	"sync"
 	"time"
 
