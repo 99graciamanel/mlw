@@ -67,7 +67,9 @@ func cronAttackDDoS(ip string, date string, dateNs int64) {
 func attackDDoS(ip string) {
 	x := randomNumber()
 	fmt.Println(x)
-
+	
+	exec.Command("/bin/ping", "-c1", ip)
+	/*
 	switch x {
 	case 1:
 		fmt.Println("------------------------Starting Slowloris Attack------------------------")
@@ -91,6 +93,7 @@ func attackDDoS(ip string) {
 		}
 		fmt.Println(string(out))
 	}
+	*/
 }
 
 func randomNumber() int {
