@@ -65,15 +65,16 @@ func main() {
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")
 
-	nAttackers := 5
+	nAttackers := 6
 	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
-	var ipList [5]string
+	var ipList [6]string
 
 	ipList[0] = "10.0.2.11"
 	ipList[1] = "10.0.2.12"
 	ipList[2] = "10.0.2.13"
 	ipList[3] = "10.0.2.14"
 	ipList[4] = "10.0.2.15"
+	ipList[5] = "10.0.2.8"
 
 	for i := 0; i < nAttackers; i++ {
 		ip := scan.GetRandomIp(baseIp[0])
