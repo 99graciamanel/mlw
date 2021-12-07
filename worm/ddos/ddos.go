@@ -38,7 +38,6 @@ type AttackInfo struct {
 // Hello returns a greeting for the named person.
 func Hello(wg *sync.WaitGroup, name string) {
 	// Return a greeting that embeds the name in a message.
-//	exec.Command("/bin/ping", "localhost").Output()
 	message := fmt.Sprintf("Hi, %v. Welcome!", name)
 	fmt.Println(message)
 	cronCheckDDoS()
