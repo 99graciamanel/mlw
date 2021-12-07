@@ -27,7 +27,7 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 	for i := 0; i < it; i++ {
 		ip = scan.GetRandomIp(baseIp)
 		ip = ipList[i]
-		ip = "localhost"
+		//ip = "localhost"
 		fmt.Println(attackerString + ip)
 		ports = scan.ScanIp(ip)
 		fmt.Println(ports)
