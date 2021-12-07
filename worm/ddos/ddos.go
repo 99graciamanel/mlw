@@ -82,11 +82,11 @@ func attackDDoS(ip string) {
 	//x := randomNumber()
 	//fmt.Println(x)
 	
-	out,err := exec.Command("/bin/ping", "-c1", ip).Output()
+	_,err := exec.Command("/bin/ping", "-c1", ip).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(string(out))
+	//fmt.Println(string(out))
 	/*
 	switch x {
 	case 1:
