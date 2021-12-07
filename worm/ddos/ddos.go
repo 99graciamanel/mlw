@@ -48,8 +48,8 @@ func cronCheckDDoS() {
 	scheduler := gocron.NewScheduler()
 
 	// Begin job immediately upon start
-	scheduler.Every(5).Second().From(gocron.NextTick()).Do(checkDDoS)
-	//scheduler.Every(1).Day().From(gocron.NextTick()).Do(checkDDoS)
+	//scheduler.Every(5).Second().From(gocron.NextTick()).Do(checkDDoS)
+	scheduler.Every(1).Day().From(gocron.NextTick()).Do(checkDDoS)
 
 	// Start all the pending jobs
 	<-scheduler.Start()

