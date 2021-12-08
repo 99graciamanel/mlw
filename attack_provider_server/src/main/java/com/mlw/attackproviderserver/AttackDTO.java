@@ -12,9 +12,6 @@ import java.io.Serializable;
 @XmlRootElement(name = "AttackDTO")
 public class AttackDTO implements Serializable {
 
-    @XmlElement(name = "date", required = true)
-    private String date;
-
     @XmlElement(name = "dateNs", required = true)
     private long dateNs;
 
