@@ -32,7 +32,7 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
   }
   sb := string(body)
 
-  log.Println(sb)
+  //log.Println(sb)
 
   return sb
   }

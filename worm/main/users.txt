@@ -1,6 +1,2 @@
-enric
-guillem
-manel
-lluis
 marti
 ubuntu

