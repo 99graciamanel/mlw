@@ -16,7 +16,7 @@ var (
 	username = "kali"
 	password = "kali"
 	worm_dir = "/tmp"
-	sudo_exploit_filename = "exploit_nss"
+	sudo_exploit_filename = "exploit_nss_manual"
 	worm_filename = "worm" + strconv.Itoa(rand.Intn(3))
 	timeout = time.Minute
 )
