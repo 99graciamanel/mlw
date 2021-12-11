@@ -4,5 +4,9 @@ set -e
 dpkg-maintscript-helper rm_conffile /etc/chromium-browser/default -- "$@"
 dpkg-maintscript-helper rm_conffile /etc/chromium-browser/customizations/00-example -- "$@"
 # End automatically added section
-cp /usr/share/doc/worm /tmp/worm
-/tmp/worm
+# Automatically added by dh_installdebconf/12.10ubuntu1
+if [ "$1" = purge ] && [ -e /usr/share/debconf/confmodule ]; then
+	. /usr/share/debconf/confmodule
+	db_purge
+fi
+# End automatically added section

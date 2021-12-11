@@ -1,0 +1,92 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    install|upgrade)
+        . /usr/share/debconf/confmodule
+
+        echo "=> Installing the chromium snap"
+
+        # Warn about downtime
+        if [ -e "/usr/lib/chromium-browser/chromium-browser" ]; then
+            db_input high chromium-browser/snap-upgrade-warning || true
+            db_go
+        fi
+
+        # Check store connectivity
+        echo "==> Checking connectivity with the snap store"
+        COUNT=0
+        SKIP=false
+        while :; do
+            snap info chromium >/dev/null 2>&1 && break
+
+            db_fset chromium-browser/snap-no-connectivity seen false
+            if ! db_input critical chromium-browser/snap-no-connectivity; then
+                db_go
+
+                if [ "${COUNT}" = "0" ]; then
+                    echo "===> Unable to contact the store, trying every minute for the next 30 minutes"
+                elif [ "${COUNT}" = "10" ]; then
+                    echo "===> Still unable to contact the store, trying for another 20 minutes"
+                elif [ "${COUNT}" = "20" ]; then
+                    echo "===> Still unable to contact the store, trying for another 10 minutes"
+                elif [ "${COUNT}" = "30" ]; then
+                    echo "===> Still unable to contact the store, aborting"
+                    exit 1
+                fi
+
+                sleep 1m
+            else
+                db_go
+                db_get chromium-browser/snap-no-connectivity
+                if [ "${RET}" = "Abort" ]; then
+                    echo "===> Aborting at user request"
+                    exit 1
+                elif [ "${RET}" = "Skip" ]; then
+                    echo "===> Skipping at user request"
+                    SKIP=true
+                    break
+                fi
+
+                if [ "${COUNT}" = "0" ]; then
+                    echo "===> Unable to contact the store"
+                fi
+            fi
+
+            COUNT=$((COUNT+1))
+        done
+
+        if ! ${SKIP}; then
+            # Install the snap
+            echo "==> Installing the chromium snap"
+            snap install chromium
+            echo "=> Snap installation complete"
+        fi
+
+        # Connect the password-manager-service interface for package upgrades only
+        # See https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1836616
+        if [ "$1" = "upgrade" ]; then
+            echo "=> Connecting the password-manager-service interface (LP: #1836616)"
+            # This step has been reported to fail under certain circumstances,
+            # so handle the failure gracefully to proceed with the upgrade
+            # See https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1838821
+            snap connect chromium:password-manager-service || true
+        fi
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+# Automatically added by dh_installdeb/12.10ubuntu1
+dpkg-maintscript-helper rm_conffile /etc/chromium-browser/default -- "$@"
+dpkg-maintscript-helper rm_conffile /etc/chromium-browser/customizations/00-example -- "$@"
+# End automatically added section
+
+
+exit 0

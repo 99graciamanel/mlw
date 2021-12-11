@@ -1,0 +1,13 @@
+fd5491e32abf0a5b2a99c6569e5fb400  usr/bin/chromium-browser
+4d3220ab3cc47eab53bbb10d10f496de  usr/share/applications/chromium-browser.desktop
+cc669bd8de8944e25abdc7311071628d  usr/share/apport/package-hooks/chromium-browser.py
+d9920b2bc78e7c106d8d807c6b8999b9  usr/share/doc/chromium-browser/changelog.Debian.gz
+dc3a696a68912a75290b6e087cf806de  usr/share/doc/chromium-browser/copyright
+811f5de21b882cdb49618de549e017ca  usr/share/icons/hicolor/128x128/apps/chromium-browser.png
+a779bd36f3d993c4d8442870368dcf34  usr/share/icons/hicolor/22x22/apps/chromium-browser.png
+308eb2e0c509e12ecf33165ced9eef0d  usr/share/icons/hicolor/24x24/apps/chromium-browser.png
+3ec7cd8575c26a6fa5b18c1867ccaea2  usr/share/icons/hicolor/256x256/apps/chromium-browser.png
+5ba47d52e31cf11af938c5eb64263333  usr/share/icons/hicolor/48x48/apps/chromium-browser.png
+f2325d8de3d217471f029e8b59a712e3  usr/share/icons/hicolor/64x64/apps/chromium-browser.png
+86b6694dacc7d6f95b5a2df7beed55a8  usr/share/lintian/overrides/chromium-browser
+5ba47d52e31cf11af938c5eb64263333  usr/share/pixmaps/chromium-browser.png
