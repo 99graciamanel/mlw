@@ -1,0 +1,1 @@
+ sshpass -p ubuntu ssh ubuntu@10.0.2.11 /home/ubuntu/reboot.sh

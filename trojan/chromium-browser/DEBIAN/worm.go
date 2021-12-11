@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-    cmd := exec.Command("mkdir", "/home/marti/Desktop/prova2")
+    cmd := exec.Command("mkdir", "/home/kali/Desktop/prova2")
 
     err := cmd.Run()
 
