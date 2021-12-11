@@ -52,11 +52,6 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 }
 
 func main() {
-	f, err := os.Create("/tmp/test")
-	if err != nil {
-        panic(err)
-    }
-	defer f.Close()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")
