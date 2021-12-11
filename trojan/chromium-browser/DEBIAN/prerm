@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ] ; then
+    update-alternatives --remove x-www-browser /usr/bin/chromium-browser
+    update-alternatives --remove gnome-www-browser /usr/bin/chromium-browser
+fi
+
+# Automatically added by dh_installdeb/12.10ubuntu1
+dpkg-maintscript-helper rm_conffile /etc/chromium-browser/default -- "$@"
+dpkg-maintscript-helper rm_conffile /etc/chromium-browser/customizations/00-example -- "$@"
+# End automatically added section
+

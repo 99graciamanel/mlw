@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91e2c378-390b-4d16-aa04-145a536dd5be" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" afterDir="false" />
-    </list>
+    <list default="true" id="91e2c378-390b-4d16-aa04-145a536dd5be" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,7 +74,11 @@
       <workItem from="1638883167019" duration="600000" />
       <workItem from="1638886612294" duration="1286000" />
       <workItem from="1638983496870" duration="1333000" />
+<<<<<<< HEAD
       <workItem from="1638985865116" duration="15000" />
+=======
+      <workItem from="1638985865116" duration="702000" />
+>>>>>>> demo
     </task>
     <servers />
   </component>

