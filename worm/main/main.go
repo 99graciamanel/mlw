@@ -66,11 +66,11 @@ func main() {
 	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
 	var ipList [6]string
 
-	ipList[0] = "10.0.2.11"
+	ipList[0] = "localhost"
 	ipList[1] = "10.0.2.12"
 	ipList[2] = "10.0.2.13"
 	ipList[3] = "10.0.2.14"
-	ipList[4] = "localhost"
+	ipList[4] = "10.0.2.11"
 	ipList[5] = "10.0.2.8"
 
 	for i := 0; i < nAttackers; i++ {
