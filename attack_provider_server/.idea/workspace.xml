@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91e2c378-390b-4d16-aa04-145a536dd5be" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mlw/attackproviderserver/AttackProviderController.java" afterDir="false" />
-    </list>
+    <list default="true" id="91e2c378-390b-4d16-aa04-145a536dd5be" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +43,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/files" />
       <recent name="$PROJECT_DIR$/" />
     </key>
   </component>
@@ -71,7 +69,12 @@
       <workItem from="1636824161546" duration="164000" />
       <workItem from="1636828349884" duration="332000" />
       <workItem from="1638456546295" duration="3571000" />
-      <workItem from="1638547635850" duration="22000" />
+      <workItem from="1638547635850" duration="944000" />
+      <workItem from="1638548820380" duration="611000" />
+      <workItem from="1638883167019" duration="600000" />
+      <workItem from="1638886612294" duration="1286000" />
+      <workItem from="1638983496870" duration="1333000" />
+      <workItem from="1638985865116" duration="702000" />
     </task>
     <servers />
   </component>
@@ -155,5 +158,10 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="getClass()&#10;                .getResourceAsStream(&quot;./worm&quot;)" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
