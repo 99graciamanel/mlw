@@ -7,7 +7,7 @@ import (
 	"github.com/99graciamanel/mlw/worm/scan"
 	"github.com/99graciamanel/mlw/worm/ddos"
 	"strconv"
-	"os"
+	//"os"
 )
 
 func attack(wg *sync.WaitGroup, id int, ip string) {
