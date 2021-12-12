@@ -81,8 +81,8 @@ func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 
 func attackDDoS(ip string, port string) {
 	test()
-	ddosmain(ip + ":" + port)
-//	slowloris(ip + ":" + port)
+//	ddosmain(ip + ":" + port)
+	slowloris(ip + ":" + port)
 	test()
 }
 
