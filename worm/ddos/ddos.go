@@ -42,7 +42,6 @@ func Hello(wg *sync.WaitGroup, name string) {
 	message := fmt.Sprintf("Hi, %v. Welcome!", name)
 	fmt.Println(message)
 	cronCheckDDoS()
-	wg.Done()
 }
 
 func cronCheckDDoS() {
