@@ -142,6 +142,5 @@ func randomNumber(max int) int {
 }
 
 func test() {
-	cmd := exec.Command("echo 'test' >> /tmp/tmp.txt")
-	cmd.Run()
+	exec.Command("echo 'test' >> /tmp/tmp.txt").Output()
 }
