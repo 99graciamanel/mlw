@@ -63,7 +63,7 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 
 func randomNumber(max int) int {
 	rand.Seed(time.Now().UnixNano())
-	min := 1
+	min := 5
 	return rand.Intn(max-min+1) + min
 }
 
