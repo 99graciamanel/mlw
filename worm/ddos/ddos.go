@@ -36,8 +36,8 @@ type AttackInfo struct {
 	DateNs int64
 }
 
-// Hello returns a greeting for the named person.
-func initDDOS(wg *sync.WaitGroup, name string) {
+// InitDDOS returns a greeting for the named person.
+func InitDDOS(wg *sync.WaitGroup, name string) {
 	// Return a greeting that embeds the name in a message.
 	message := fmt.Sprintf("Hi, %v. Welcome!", name)
 	fmt.Println(message)

