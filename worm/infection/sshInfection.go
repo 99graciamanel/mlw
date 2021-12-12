@@ -129,7 +129,6 @@ func SshCheckInfection(ip string) bool {
 	}
 	if session != nil {
 		defer session.Close()
-		return false
 	}
 
 	if session == nil || client == nil {
